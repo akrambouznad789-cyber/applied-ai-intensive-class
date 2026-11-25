@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jour {{NUMERO}} · {{TITRE}} | Intensive AI Engineering Class</title>
+<meta name="description" content="{{IDEE}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<main class="page-jour">
+  <p class="retour"><a href="../../index.html">La route des 140 jours</a></p>
+
+  <header class="entete">
+    <p class="surtitre">Jour {{NUMERO}} sur 140 · Phase {{PHASE_NUMERO}} : {{PHASE_NOM}}</p>
+    <div class="compteur" role="img" aria-label="Jour {{NUMERO}} sur 140"><span style="width: calc({{NUMERO}} / 140 * 100%)"></span></div>
+    <h1>{{TITRE}}</h1>
+    <p class="chapeau">{{IDEE}}</p>
+  </header>
+
+  <section id="notions">
+    <h2><span class="numero">1</span>Notions</h2>
+    {{NOTIONS}}
+  </section>
+
+  <section id="demo">
+    <h2><span class="numero">2</span>Démo</h2>
+    {{DEMO}}
+  </section>
+
+  <section id="mots">
+    <h2><span class="numero">3</span>Ce que j'ai fait, en mes mots</h2>
+    <p class="a-ecrire">À ÉCRIRE PAR AKRAM : ce que j'ai fait et compris, ce qui m'a surpris, avec la figure de mon carnet.</p>
+  </section>
+
+  <section id="sources" class="sources">
+    <h2>Sources</h2>
+    {{SOURCES}}
+    <p class="attribution">Notions et démo : l'assistant IA. Carnet, figure et mots : Akram, code écrit pas à pas avec l'assistant IA.</p>
+  </section>
+</main>
+</body>
+</html>

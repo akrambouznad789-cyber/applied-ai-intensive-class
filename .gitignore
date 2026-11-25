@@ -1,0 +1,24 @@
+# Contexte privé : il reste sur ce PC et n'ira jamais sur GitHub.
+CLAUDE.md
+CLAUDE.local.md
+contexte/
+.claude/settings.local.json
+
+# Données des jours : jamais dans le dépôt, seulement les petits CSV de résultats.
+docs/jours/*/donnees/
+
+# Poids de modèles : jamais dans le dépôt (le vérificateur les refuse aussi).
+*.gguf
+*.safetensors
+*.onnx
+*.pt
+*.pth
+*.bin
+
+# Fichiers de travail
+.vscode/
+.captures/
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc

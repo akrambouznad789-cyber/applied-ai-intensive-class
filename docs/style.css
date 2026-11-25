@@ -1,0 +1,194 @@
+/* Pages des deux classes intensives : la route des 140 jours et une fiche de cahier par jour.
+   Le même fichier sert aux deux classes : une retouche ici se reporte dans l'autre classe.
+   Une colonne de lecture d'environ 70 caractères ; la démo déborde un peu sur les grands écrans.
+   Charte « Quiet Light indigo » : le thème Quiet Light de VS Code, violet tiré vers le bleu ;
+   IBM Plex Sans pour le texte, IBM Plex Mono pour le code et les chiffres. */
+:root {
+  --fond: #F5F5F5;
+  --surface: #FFFFFF;
+  --texte: #333333;
+  --secondaire: #6B6B7E;
+  --filet: #D9D9E3;
+  --accent: #4F4FC4;      /* liens, compteur, focus */
+  --marque: #4F4FC4;      /* série 1 des graphiques : ce qu'on veut montrer */
+  --serie-2: #C0702A;
+  --serie-3: #008B7E;
+  --neutre: #C9C9D6;      /* le contexte dans un graphique */
+  --police-texte: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --police-code: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fond: #1C1C24; --surface: #262632; --texte: #E6E6EE; --secondaire: #A3A3B5; --filet: #3A3A4A;
+    --accent: #9C9CF2; --marque: #7C7CE8; --serie-2: #C47A38; --serie-3: #2FA898; --neutre: #4A4A5E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fond: #1C1C24; --surface: #262632; --texte: #E6E6EE; --secondaire: #A3A3B5; --filet: #3A3A4A;
+  --accent: #9C9CF2; --marque: #7C7CE8; --serie-2: #C47A38; --serie-3: #2FA898; --neutre: #4A4A5E;
+  color-scheme: dark;
+}
+/* La classe Inférence marque ses jours en sarcelle (série 3) ; les liens restent indigo. */
+.classe-inference { --marque: var(--serie-3); }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+/* Titre lu par les lecteurs d'écran, caché à l'œil : le grand compteur le remplace. */
+.sr-titre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--texte);
+  font-family: var(--police-texte);
+  font-size: 17px;
+  line-height: 1.6;
+}
+.page-jour, .page-jours {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 64px;
+  display: grid;
+  gap: 48px;
+}
+.page-jour > *, .page-jours > * { min-width: 0; }
+h1, h2, h3 { margin: 0; line-height: 1.15; text-wrap: balance; }
+h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p, ul, ol { margin: 0; }
+ul, ol { padding-left: 1.3em; display: grid; gap: 6px; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+code { font-family: var(--police-code); font-size: 0.9em; overflow-wrap: anywhere; }
+
+/* En-tête du jour */
+.retour { font-family: var(--police-code); font-size: 0.85rem; }
+.entete { display: grid; gap: 12px; }
+.surtitre { font-family: var(--police-code); font-size: 0.82rem; color: var(--secondaire); letter-spacing: 0.02em; }
+.compteur { height: 6px; border-radius: 3px; background: color-mix(in oklab, var(--marque) 16%, var(--surface)); overflow: hidden; }
+.compteur span { display: block; height: 100%; border-radius: 3px; background: var(--marque); }
+.chapeau { font-size: 1.15rem; max-width: 62ch; }
+
+/* Sections numérotées : l'ordre de la journée (notions, démo, pratique, mots) */
+.page-jour section { display: grid; gap: 16px; }
+.page-jour section > * { min-width: 0; }
+.numero { font-family: var(--police-code); font-weight: 500; color: var(--secondaire); margin-right: 10px; }
+.page-jour p { max-width: 68ch; }
+
+/* Encadrés : seuls le schéma et la démo sont des objets à part */
+.carte { background: var(--surface); border: 1px solid var(--filet); border-radius: 10px; padding: 18px; display: grid; gap: 14px; }
+@media (min-width: 64rem) { #demo .carte { margin-inline: -4rem; } }
+figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+figcaption, .note { color: var(--secondaire); font-size: 0.9rem; }
+.defilant { overflow-x: auto; }
+.defilant svg { display: block; width: 100%; height: auto; }
+/* Un schéma garde un texte lisible sur téléphone : il défile de côté plutôt que de rétrécir. */
+.defilant svg.schema { min-width: 520px; }
+
+/* Pseudo-code : la recette à recopier dans le cahier */
+pre.pseudo {
+  margin: 0; padding: 14px 16px; overflow-x: auto;
+  font-family: var(--police-code); font-size: 0.9rem; line-height: 1.55;
+  background: var(--surface); border: 1px solid var(--filet); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+}
+
+/* Tableaux de chiffres */
+table.chiffres { border-collapse: collapse; width: 100%; font-size: 0.93rem; font-variant-numeric: tabular-nums; }
+table.chiffres th { font-family: var(--police-code); font-weight: 500; font-size: 0.78rem; color: var(--secondaire); text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--filet); }
+table.chiffres td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--filet); white-space: nowrap; }
+table.chiffres th:first-child, table.chiffres td:first-child { text-align: left; }
+table.chiffres tfoot td { border-bottom: none; font-weight: 600; }
+
+/* Ce qui reste à écrire par Akram */
+.a-ecrire { border: 1px dashed var(--filet); border-radius: 8px; padding: 12px 14px; color: var(--secondaire); font-style: italic; }
+
+/* Commandes des démos */
+.commandes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.bouton {
+  font: 600 0.9rem/1 var(--police-texte); padding: 9px 14px 8px; border-radius: 999px;
+  border: 1px solid var(--filet); background: var(--surface); color: var(--texte); cursor: pointer;
+}
+.bouton:hover { border-color: var(--secondaire); }
+.bouton[aria-pressed="true"] { background: var(--texte); color: var(--surface); border-color: var(--texte); }
+.lecture { font-family: var(--police-code); font-size: 0.88rem; color: var(--secondaire); }
+.lecture strong { color: var(--texte); font-weight: 500; }
+.curseur { display: inline-flex; align-items: center; gap: 8px; margin-right: 14px; font-family: var(--police-code); font-size: 0.88rem; }
+.curseur output { min-width: 1.2em; color: var(--texte); }
+.curseur input { accent-color: var(--marque); }
+
+/* Graphiques en SVG : textes aux couleurs du thème, marques fines */
+.axe { stroke: var(--filet); stroke-width: 1; }
+.svg-texte { font-family: var(--police-code); font-size: 12px; fill: var(--secondaire); }
+.svg-texte-fort { font-family: var(--police-code); font-size: 12px; fill: var(--texte); }
+.trait-contexte { fill: none; stroke: var(--neutre); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.trait-accent { fill: none; stroke: var(--marque); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.point-accent { fill: var(--marque); stroke: var(--surface); stroke-width: 2; }
+.point-contexte { fill: var(--secondaire); stroke: var(--surface); stroke-width: 2; }
+.boite { fill: var(--surface); stroke: var(--filet); stroke-width: 1.2; }
+.boite-accent { fill: var(--surface); stroke: var(--marque); stroke-width: 1.6; }
+.fleche { stroke: var(--secondaire); stroke-width: 1.4; fill: none; }
+.pointe { fill: var(--secondaire); }
+
+.sources ul { font-size: 0.95rem; }
+.attribution { color: var(--secondaire); font-size: 0.85rem; }
+
+/* Page de la route : liens du haut, la ligne des phases, une rangée de cases par phase */
+.liens-haut { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
+.liens-haut a {
+  display: inline-block; font: 600 0.88rem/1 var(--police-texte); padding: 8px 12px 7px; border-radius: 999px;
+  border: 1px solid var(--filet); background: var(--surface); color: var(--texte); text-decoration: none;
+}
+.liens-haut a:hover { border-color: var(--texte); }
+/* Un segment par phase, large comme son nombre de jours (--jours, posé sur chaque segment). */
+.ligne-phases { display: flex; gap: 3px; list-style: none; padding: 0; }
+.ligne-phases li { flex: var(--jours) 1 0; min-width: 0; }
+.ligne-phases a {
+  display: grid; place-items: center; height: 34px; border-radius: 6px; text-decoration: none;
+  background: color-mix(in oklab, var(--marque) 14%, var(--surface));
+  border: 1px solid color-mix(in oklab, var(--marque) 40%, var(--surface));
+  color: var(--texte); font: 500 0.82rem/1 var(--police-code);
+}
+.ligne-phases a:hover { background: color-mix(in oklab, var(--marque) 28%, var(--surface)); }
+.reperes-jours { display: flex; justify-content: space-between; font-family: var(--police-code); font-size: 0.78rem; color: var(--secondaire); }
+.page-jours section { display: grid; gap: 16px; }
+.page-jours section > * { min-width: 0; }
+.compte { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.compte strong { font-size: 3rem; font-weight: 700; line-height: 1; }
+.compte span { color: var(--secondaire); }
+.phases { display: grid; gap: 22px; }
+.phase { display: grid; gap: 8px; scroll-margin-top: 16px; }
+.phase h3 { font-size: 0.98rem; }
+.phase h3 .numero { font-size: 0.85rem; }
+.phase .contenu { color: var(--secondaire); font-size: 0.92rem; max-width: 68ch; }
+.cases { display: flex; flex-wrap: wrap; gap: 5px; list-style: none; padding: 0; }
+.case {
+  position: relative; display: block; width: 22px; height: 22px; border-radius: 4px;
+  border: 1px solid var(--filet); background: var(--surface);
+}
+.case.faite { background: var(--marque); border-color: var(--marque); }
+/* Un jour de projet porte un losange : la forme dit le projet, pas la couleur seule. */
+.case.projet::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 7px; height: 7px;
+  transform: translate(-50%, -50%) rotate(45deg); background: var(--secondaire);
+}
+.case.faite.projet::after { background: var(--surface); }
+a.case:hover { outline: 2px solid var(--texte); outline-offset: 1px; }
+.legende { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--secondaire); font-size: 0.88rem; align-items: center; }
+.legende span { display: inline-flex; gap: 8px; align-items: center; }
+.legende .case { width: 16px; height: 16px; }
+.legende .case.projet::after { width: 6px; height: 6px; }
+.liste-jours { font-variant-numeric: tabular-nums; }
+/* La recette d'une journée : cinq moments, toujours dans le même ordre. */
+.recette { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px; list-style: none; padding: 0; }
+.recette li {
+  background: var(--surface); border: 1px solid var(--filet); border-top: 3px solid var(--marque);
+  border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; align-content: start;
+}
+.recette .duree { font-family: var(--police-code); font-size: 0.8rem; color: var(--secondaire); }
+.recette .quoi { font-size: 0.88rem; color: var(--secondaire); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

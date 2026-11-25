@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Intensive AI Engineering Class</title>
+<meta name="description" content="Une classe intensive de 140 jours en IA appliquée : des données jusqu'à un modèle de langage ouvert mis en service en local. La théorie d'abord, une page par jour, un projet tous les 7 à 10 jours.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="page-jours">
+  <nav aria-label="Pages liées">
+    <ul class="liens-haut">
+      <li><a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">← Parcours IA · les deux classes</a></li>
+      <li><a href="https://akrambouznad789-cyber.github.io/intensive-inference-engineering-class/">Classe sœur : Intensive Inference Engineering Class ↗</a></li>
+    </ul>
+  </nav>
+
+  <header class="entete">
+    <p class="surtitre">Classe 1 sur 2 · 9 phases · 140 jours</p>
+    <h1>Intensive AI Engineering Class</h1>
+    <p class="chapeau">Construire avec des modèles : des données jusqu'à un modèle de langage ouvert mis en service en local. Une séance d'environ une heure par jour. La théorie d'abord, puis la pratique sur un cas de transport, puis une page qui garde la trace. Un projet de consolidation revient tous les 7 à 10 jours.</p>
+  </header>
+
+  <section aria-labelledby="route-titre">
+    <h2 id="route-titre">La route</h2>
+    <ol class="ligne-phases" id="ligne-phases"></ol>
+    <p class="reperes-jours" aria-hidden="true"><span>Jour 1</span><span>Jour 140</span></p>
+  </section>
+
+  <section aria-labelledby="progression-titre">
+    <h2 id="progression-titre" class="sr-titre">Progression</h2>
+    <p class="compte"><strong id="compte">0</strong><span id="compte-texte">jour publié sur 140</span></p>
+    <p class="legende">
+      <span><i class="case faite" aria-hidden="true"></i> jour publié</span>
+      <span><i class="case" aria-hidden="true"></i> à venir</span>
+      <span><i class="case projet" aria-hidden="true"></i> jour de projet</span>
+    </p>
+    <div class="phases" id="phases"></div>
+  </section>
+
+  <section aria-labelledby="liste-titre">
+    <h2 id="liste-titre">Jours publiés</h2>
+    <ol class="liste-jours" id="liste-jours"></ol>
+    <p class="note" id="liste-vide" hidden>Aucun jour publié pour l'instant : le Jour 1 ouvre la phase 1.</p>
+  </section>
+
+  <section aria-labelledby="recette-titre">
+    <h2 id="recette-titre">Une journée, toujours dans le même ordre</h2>
+    <ol class="recette">
+      <li><strong>Rappel</strong><span class="duree">5 min</span><span class="quoi">une ou deux questions de révision</span></li>
+      <li><strong>Théorie</strong><span class="duree">20 min</span><span class="quoi">schéma, mini-exemple chiffré, pseudo-code, puis le passage précis d'une source</span></li>
+      <li><strong>Cahier</strong><span class="duree">10 min</span><span class="quoi">l'idée, recopiée à la main</span></li>
+      <li><strong>Pratique</strong><span class="duree">20 min</span><span class="quoi">un carnet qui refait le calcul et produit une figure</span></li>
+      <li><strong>Trace</strong><span class="duree">5 min</span><span class="quoi">la page du jour</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="avant-titre">
+    <h2 id="avant-titre">Avant le Jour 1</h2>
+    <p>Trois projets d'application (boosting et validation, clustering et différence de différences, réseau PyTorch et plongements) et deux stations (réseaux de neurones, rétropropagation) sont publiés sur la <a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">page d'accueil du parcours</a>. La classe reprend ces notions par la théorie.</p>
+  </section>
+
+  <p class="attribution">Mise en page et démos : l'assistant IA. Carnets, figures et mots : Akram.</p>
+</main>
+
+<!-- La seule chose à mettre à jour chaque jour : une ligne par jour publié, par exemple
+     { "numero": 1, "titre": "La perte et la descente de gradient" } -->
+<script type="application/json" id="jours-publies">
+[
+  { "numero": 1, "titre": "La perte et la descente de gradient" }
+]
+</script>
+
+<!-- Les phases de la classe. La vitrine (akrambouznad789-cyber.github.io) lit ce bloc et celui des jours publiés ;
+     la page d'accueil du parcours (dépôt roadmap-ia) reprend les noms et les bornes. -->
+<script type="application/json" id="phases-de-la-classe">
+[
+  { "numero": 1, "nom": "Apprendre à partir de données", "debut": 1, "fin": 8, "projets": [8],
+    "contenu": "perte et descente de gradient · entropie croisée · arbres et forêts · boosting · surapprentissage · validation sans fuite · K-moyennes et ACP" },
+  { "numero": 2, "nom": "Réseaux de neurones et PyTorch", "debut": 9, "fin": 26, "projets": [17, 26],
+    "contenu": "rétropropagation et autograd · optimiseurs · tenseurs et modules · normalisation et régularisation · plongements · convolution · graphes et passage de messages" },
+  { "numero": 3, "nom": "Langage et Transformer", "debut": 27, "fin": 50, "projets": [34, 42, 50],
+    "contenu": "bigramme · réseau de caractères · tokenisation BPE · attention · têtes multiples · bloc Transformer · préentraînement et échantillonnage d'un petit GPT" },
+  { "numero": 4, "nom": "Se servir d'un LLM ouvert en local", "debut": 51, "fin": 64, "projets": [57, 64],
+    "contenu": "exécution locale · gabarits de conversation · consignes · sorties structurées · appels d'outils · plongements de phrases" },
+  { "numero": 5, "nom": "Évaluation", "debut": 65, "fin": 78, "projets": [71, 78],
+    "contenu": "jeux de test · métriques · LLM juge · grilles · lecture des échecs · tests A/B et causalité · contamination" },
+  { "numero": 6, "nom": "RAG", "debut": 79, "fin": 92, "projets": [85, 92],
+    "contenu": "découpage · index vectoriel · recherche hybride · réordonnancement · réponse ancrée · rappel@k" },
+  { "numero": 7, "nom": "Agents", "debut": 93, "fin": 112, "projets": [102, 112],
+    "contenu": "boucle d'agent · outils · ReAct · mémoire · planification · MCP · garde-fous · évaluation de trajectoires" },
+  { "numero": 8, "nom": "Affinage", "debut": 113, "fin": 126, "projets": [119, 126],
+    "contenu": "données d'affinage · SFT · LoRA et QLoRA · préférences (DPO) · entraînement réparti et diffusion, en miniature · mesure avant et après" },
+  { "numero": 9, "nom": "Mise en service et bilan", "debut": 127, "fin": 140, "projets": [133, 140],
+    "contenu": "API locale · Docker · plusieurs utilisateurs · surveillance · sécurité · projet final" }
+]
+</script>
+
+<script>
+  const NOMBRE_DE_JOURS = 140;
+  const PHASES = JSON.parse(document.getElementById("phases-de-la-classe").textContent);
+
+  const joursPublies = JSON.parse(document.getElementById("jours-publies").textContent);
+  const titreParJour = new Map(joursPublies.map((jour) => [jour.numero, jour.titre]));
+  const adresseDuJour = (numero) => `jours/jour-${String(numero).padStart(3, "0")}/`;
+
+  function dessinerUnSegment(phase) {
+    const lien = document.createElement("a");
+    lien.href = `#phase-${phase.numero}`;
+    lien.textContent = phase.numero;
+    lien.title = `Phase ${phase.numero} · ${phase.nom} · jours ${phase.debut} à ${phase.fin}`;
+    lien.setAttribute("aria-label", lien.title);
+    const segment = document.createElement("li");
+    segment.style.setProperty("--jours", phase.fin - phase.debut + 1);
+    segment.append(lien);
+    return segment;
+  }
+
+  function dessinerUnePhase(phase) {
+    const bloc = document.createElement("div");
+    bloc.className = "phase";
+    bloc.id = `phase-${phase.numero}`;
+    const titre = document.createElement("h3");
+    const etiquette = document.createElement("span");
+    etiquette.className = "numero";
+    etiquette.textContent = `Phase ${phase.numero}`;
+    titre.append(etiquette, document.createTextNode(`${phase.nom} · jours ${phase.debut} à ${phase.fin}`));
+    const contenu = document.createElement("p");
+    contenu.className = "contenu";
+    contenu.textContent = phase.contenu;
+
+    const cases = document.createElement("ul");
+    cases.className = "cases";
+    for (let numero = phase.debut; numero <= phase.fin; numero += 1) {
+      const titreDuJour = titreParJour.get(numero);
+      const estUnProjet = phase.projets.includes(numero);
+      const description = `Jour ${numero}${estUnProjet ? ", projet" : ""}${titreDuJour ? ` : ${titreDuJour}` : ", à venir"}`;
+      const marque = document.createElement(titreDuJour ? "a" : "span");
+      marque.className = ["case", titreDuJour ? "faite" : "", estUnProjet ? "projet" : ""].join(" ").trim();
+      marque.title = description;
+      marque.setAttribute("aria-label", description);
+      if (titreDuJour) {
+        marque.href = adresseDuJour(numero);
+      } else {
+        marque.setAttribute("role", "img");
+      }
+      const element = document.createElement("li");
+      element.append(marque);
+      cases.append(element);
+    }
+    bloc.append(titre, contenu, cases);
+    return bloc;
+  }
+
+  document.getElementById("ligne-phases").append(...PHASES.map(dessinerUnSegment));
+  document.getElementById("phases").append(...PHASES.map(dessinerUnePhase));
+
+  const nombrePublies = joursPublies.length;
+  document.getElementById("compte").textContent = nombrePublies;
+  document.getElementById("compte-texte").textContent =
+    `${nombrePublies > 1 ? "jours publiés" : "jour publié"} sur ${NOMBRE_DE_JOURS}`;
+
+  const liste = document.getElementById("liste-jours");
+  for (const jour of [...joursPublies].sort((a, b) => a.numero - b.numero)) {
+    const lien = document.createElement("a");
+    lien.href = adresseDuJour(jour.numero);
+    lien.textContent = `Jour ${jour.numero} · ${jour.titre}`;
+    const element = document.createElement("li");
+    element.append(lien);
+    liste.append(element);
+  }
+  liste.hidden = nombrePublies === 0;
+  document.getElementById("liste-vide").hidden = nombrePublies > 0;
+</script>
+</body>
+</html>
