@@ -1,17 +1,18 @@
 ---
 name: publier
-description: Vérifie le contenu public de la classe et prépare le push avec Akram, qui tape lui-même les commandes. Utiliser quand il dit « /publier », « mets ça en ligne » ou « envoie sur GitHub ».
+description: Vérifie le contenu public de la classe, puis fait le commit et le push sur GitHub. Utiliser quand il dit « /publier », « mets ça en ligne » ou « envoie sur GitHub ».
 disable-model-invocation: true
 ---
 
 # Publier sur GitHub
 
-Le site de la classe fait partie de son portfolio public : une erreur ici se voit par des recruteurs et reste dans l'historique de git. C'est lui qui tape `git add`, `git commit` et `git push` ; `.claude/settings.json` t'interdit le push.
+Le site de la classe fait partie de son portfolio public : une erreur ici se voit par des recruteurs et reste dans l'historique de git. Tu fais toi-même `git add`, `git commit` et `git push` : son « /publier » ou son « mets ça en ligne » vaut accord. La garde `outils/garde_git_push.py` relance le vérificateur du dépôt visé avant chaque push et le bloque au moindre problème.
 
-1. Il lance `python -m pytest`, puis `python outils/verifier_avant_publication.py`. Au moindre problème, arrêtez-vous et corrigez.
+1. Lance `python -m pytest`, puis `python outils/verifier_avant_publication.py`. Au moindre problème, arrête-toi et corrige.
 2. Vérifie le rendu des pages modifiées avec `python outils/capturer_page.py`, puis lis les images.
-3. Il ajoute les fichiers nommément ; relisez ensemble `git diff --cached`. Cherche ce qu'un script ne voit pas : une affirmation exagérée, un résultat sans preuve, un titre d'ingénieur, un élément de sa recherche d'emploi, un fichier de données suivi.
-4. Il écrit son message de commit, sans ligne de co-auteur, puis fait `git push`. Vérifie ensuite la page en ligne.
+3. Ajoute les fichiers nommément et relis `git diff --cached`. Cherche ce qu'un script ne voit pas : une affirmation exagérée, un résultat sans preuve, un titre d'ingénieur, un élément de sa recherche d'emploi, un fichier de données suivi.
+4. Commit : son message s'il en donne un, sinon un message court et clair de ta main ; jamais de ligne de co-auteur. Puis `git push`.
+5. Dis-lui en deux lignes ce qui est parti, puis vérifie la page en ligne.
 
 ## Première publication
 `gh` n'est pas installé. Le nom du dépôt est dans `CLAUDE.md` ; l'adresse de commit anonyme est déjà réglée dans ce dépôt (`git config --local user.email`).

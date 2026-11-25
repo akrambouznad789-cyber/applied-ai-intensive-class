@@ -48,10 +48,7 @@ Il écrit ensuite « Ce que j'ai fait, en mes mots » : trois ou quatre phrases,
    - les révisions dues à J+1, J+3, J+7 et J+21, comptées en jours du programme ;
    - la ligne du jour, avec sa date privée et sa durée.
 2. Ajoute le jour au bloc JSON `jours-publies` de `docs/index.html`, puis mets à jour le compteur N/140 du README.
-3. Les gestes de publication sont à lui (voir `/publier`) :
-   - il lance `python -m pytest` et `python outils/verifier_avant_publication.py` ;
-   - il ajoute les fichiers du jour nommément et relit `git diff --cached` avec toi ;
-   - il commit sans ligne de co-auteur, puis pousse. Vérifie ensuite la page en ligne.
+3. Publie toi-même en suivant `/publier`, une fois ses mots placés : tests, vérification, fichiers du jour ajoutés nommément, `git diff --cached` relu, commit sans ligne de co-auteur, push. Vérifie ensuite la page en ligne.
 4. Ajoute une entrée dans `contexte/journal.md` : ce qu'il a compris, ce qui a bloqué, ce que tu as fait à sa place.
 
 ## Jours de projet

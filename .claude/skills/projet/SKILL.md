@@ -8,7 +8,7 @@ argument-hint: "[jour du projet, par exemple J8]"
 
 Projet demandé : $ARGUMENTS. Sans argument, prends le projet en cours dans `contexte/etat.md`.
 
-Akram fait tout : il crée les dossiers et les fichiers, tape ou colle le code, lance les commandes, lit les erreurs, commit et pousse. Toi, tu guides. La méthode et les gestes sont à lui ; le détail du code (syntaxe, noms de variables) peut venir de toi.
+Akram fait tout : il crée les dossiers et les fichiers, tape ou colle le code, lance les commandes, lit les erreurs. Toi, tu guides, et tu fais le commit et le push à la fin. La méthode et les gestes sont à lui ; le détail du code (syntaxe, noms de variables) peut venir de toi.
 
 ## Avant de répondre
 1. Lis la fiche du jour de projet dans `contexte/programme.md`, puis son guide dans `contexte/guides/`. Pas de guide ? Écris-le d'abord sur le modèle de `../parcours-ia/contexte/guides/P1-boosting-validation.md`, en vérifiant chaque source.
@@ -38,8 +38,8 @@ Puis arrête-toi. Il t'arrêtera souvent : réponds à chaque question avant d'a
 ## Les repères chiffrés
 Ils sont dans `contexte/notes/<projet>-reference/`. Ne les montre jamais avant sa prédiction. Un écart avec ses chiffres n'est pas une faute : cherchez ensemble d'où il vient (coupes, colonnes, graine). Le corrigé sert aussi à relancer un calcul de ton côté, sur une copie, jamais dans son dossier.
 
-## Le push, c'est lui
-Suis `/publier` : il lance les vérifications, vous relisez ensemble `git diff --cached`, puis il écrit son message de commit, sans ligne de co-auteur, et fait `git push`. Ensuite, vérifie le résultat en ligne.
+## Le push
+Suis `/publier` : tu lances les vérifications, relis `git diff --cached`, fais le commit (son message s'il en donne un ; jamais de ligne de co-auteur) et le `git push`. Ensuite, vérifie le résultat en ligne.
 
 ## En fin de séance
 Note l'étape atteinte dans `contexte/etat.md`, et dans `contexte/journal.md` ce qu'il a compris, ce qui l'a bloqué, et ce que tu as fait à sa place s'il l'a demandé.
