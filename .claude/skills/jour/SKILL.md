@@ -10,11 +10,13 @@ Jour demandé : $ARGUMENTS. Sans numéro, prends le prochain jour de `contexte/s
 
 Une journée dure environ 1 h et suit toujours la même recette, dans le même ordre : Akram aime les recettes fixes. Un seul moment par réponse ; pendant la théorie, une seule question par message.
 
+On parle en français. Tout ce qui est public est en anglais : la page, le carnet (code, commentaires, pseudo-code), les étiquettes des figures, les nombres au format anglais (0.24, 19,103 ; jamais `en_francais` ni `pourcentage` de la charte), le README, les messages de commit.
+
 ## Avant la séance
 1. Lis la fiche du jour dans `contexte/programme.md`, puis `contexte/suivi.md` (carte des niveaux, révisions dues), puis l'entrée la plus récente de `contexte/journal.md`.
 2. Lis la fiche du même jour N dans la classe jumelle (`../Intensive Inference Engineering Class/contexte/programme.md`), cette section seulement. Si un concept se recoupe, prévois un renvoi d'une phrase vers l'autre classe ; ne refais pas sa théorie.
 3. Le jour ouvre une phase pas encore détaillée ? Détaille-la d'abord dans `programme.md` : une fiche par jour, chaque source vérifiée (lien, durée, passage précis en minutes ou en section). Écris aussi le guide du projet de la phase dans `contexte/guides/`, sur le modèle de `../parcours-ia/contexte/guides/P1-boosting-validation.md`.
-4. Prépare la page : copie `gabarits/jour.html` vers `docs/jours/jour-NNN/index.html` (NNN sur trois chiffres), puis remplis les `{{...}}`. Garde le repère « À ÉCRIRE PAR AKRAM » : la vérification bloque la publication tant qu'il reste. La démo montre une seule idée, se comprend en 10 secondes et prend un exemple de transport ; une valeur simulée est étiquetée comme telle. Vérifie le rendu avec `python outils/capturer_page.py docs/jours/jour-NNN/index.html`, puis lis les deux images.
+4. Prépare la page : copie `gabarits/jour.html` vers `docs/jours/jour-NNN/index.html` (NNN sur trois chiffres), puis remplis les `{{...}}` en anglais. Garde le repère « TO BE WRITTEN BY AKRAM » : la vérification bloque la publication tant qu'il reste. La démo montre une seule idée, se comprend en 10 secondes et prend un exemple de transport ; une valeur simulée est étiquetée comme telle. Vérifie le rendu avec `python outils/capturer_page.py docs/jours/jour-NNN/index.html`, puis lis les deux images.
 
 ## La recette
 ### 1. Rappel (5 min)
@@ -40,7 +42,7 @@ Il crée son carnet `docs/jours/jour-NNN/jour-NNN.ipynb`, avec le noyau Jupyter 
 - La figure passe par `style/charte.py` (`sys.path.insert(0, "../../../style")`) et s'enregistre dans le dossier du jour en `_clair.png` et `_sombre.png`.
 - Les données éventuelles vont dans `docs/jours/jour-NNN/donnees/`, que git ignore.
 
-Il écrit ensuite « Ce que j'ai fait, en mes mots » : trois ou quatre phrases, ce qu'il a fait et compris, ce qui l'a surpris. Place-les dans `#mots`, à la place du repère, avec sa figure dans une balise `<picture>` et le lien vers son carnet sur GitHub. Tu peux corriger la langue, jamais les idées.
+Il écrit ensuite « What I did, in my words » : trois ou quatre phrases, ce qu'il a fait et compris, ce qui l'a surpris. Il les écrit en français ; tu les traduis en anglais sans changer ses idées, puis tu lui montres la traduction avant de la placer. Place-les dans `#mots`, à la place du repère, avec sa figure dans une balise `<picture>` et le lien vers son carnet sur GitHub. S'il écrit lui-même en anglais, retire « English translation of his words » de la ligne d'attribution.
 
 ### 5. Trace (5 min)
 1. Mets à jour `contexte/suivi.md` :
@@ -55,5 +57,5 @@ Il écrit ensuite « Ce que j'ai fait, en mes mots » : trois ou quatre phrases,
 Il y en a un tous les 7 à 10 jours (voir `programme.md`). Suis `/projet` avec le guide de la phase, `/coach` pour la pièce sans aide, et `/quiz` en fin de phase. Le projet vit dans le dossier de son jour (`docs/jours/jour-NNN/`). P4, repris en phase 3, garde son code, son guide et son corrigé dans le cerveau (`../parcours-ia/`).
 
 ## Public contre privé
-- **Public** : la page du jour (notions et démo signées « l'assistant IA », ses mots, sa trace), son carnet et ses figures. Les pages disent « Jour N », jamais une date.
+- **Public**, en anglais : la page du jour (notions et démo signées « the AI assistant », ses mots traduits, sa trace), son carnet et ses figures. Les pages disent « Day N », jamais une date. Les chemins restent `docs/jours/jour-NNN/`, et les blocs JSON de la route gardent leurs noms et leurs clés français (`jours-publies`, `numero`, `titre`) : la vitrine les lit.
 - **Privé** : les niveaux, les révisions, les erreurs, les indices, les prédictions ratées et le cahier.

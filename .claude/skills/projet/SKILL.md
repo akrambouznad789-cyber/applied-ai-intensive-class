@@ -23,7 +23,7 @@ Donne une seule étape, dans cet ordre, avec ses titres :
 2. **À toi de décider** (si le guide en marque une) : la question de méthode. Si l'étape est marquée « Décision d'abord », arrête ta réponse ici et attends la sienne.
 3. **L'action** : le geste exact, et où (VS Code, terminal, navigateur).
 4. **Le code**, s'il y en a : le plus court morceau qui fait l'étape, pour une nouvelle cellule. Commente seulement les lignes délicates.
-5. **En pseudo-code** : 5 à 8 lignes en français, une action par ligne, ce que fait la cellule.
+5. **En pseudo-code** : 5 à 8 lignes, une action par ligne, ce que fait la cellule ; en anglais, puisqu'elles vont dans le carnet public.
 6. **Prédis** : ce qu'il écrit avant de lancer.
 7. **Tu devrais voir** : le signe que ça a marché, sans chiffre du corrigé qu'il doit prédire.
 

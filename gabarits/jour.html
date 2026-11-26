@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Jour {{NUMERO}} · {{TITRE}} | Intensive AI Engineering Class</title>
-<meta name="description" content="{{IDEE}}">
+<title>Day {{NUMBER}} · {{TITLE}} | Intensive AI Engineering Class</title>
+<meta name="description" content="{{IDEA}}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
@@ -12,13 +12,13 @@
 </head>
 <body>
 <main class="page-jour">
-  <p class="retour"><a href="../../index.html">La route des 140 jours</a></p>
+  <p class="retour"><a href="../../index.html">The 140-day route</a></p>
 
   <header class="entete">
-    <p class="surtitre">Jour {{NUMERO}} sur 140 · Phase {{PHASE_NUMERO}} : {{PHASE_NOM}}</p>
-    <div class="compteur" role="img" aria-label="Jour {{NUMERO}} sur 140"><span style="width: calc({{NUMERO}} / 140 * 100%)"></span></div>
-    <h1>{{TITRE}}</h1>
-    <p class="chapeau">{{IDEE}}</p>
+    <p class="surtitre">Day {{NUMBER}} of 140 · Phase {{PHASE_NUMBER}}: {{PHASE_NAME}}</p>
+    <div class="compteur" role="img" aria-label="Day {{NUMBER}} of 140"><span style="width: calc({{NUMBER}} / 140 * 100%)"></span></div>
+    <h1>{{TITLE}}</h1>
+    <p class="chapeau">{{IDEA}}</p>
   </header>
 
   <section id="notions">
@@ -27,19 +27,19 @@
   </section>
 
   <section id="demo">
-    <h2><span class="numero">2</span>Démo</h2>
+    <h2><span class="numero">2</span>Demo</h2>
     {{DEMO}}
   </section>
 
   <section id="mots">
-    <h2><span class="numero">3</span>Ce que j'ai fait, en mes mots</h2>
-    <p class="a-ecrire">À ÉCRIRE PAR AKRAM : ce que j'ai fait et compris, ce qui m'a surpris, avec la figure de mon carnet.</p>
+    <h2><span class="numero">3</span>What I did, in my words</h2>
+    <p class="a-ecrire">TO BE WRITTEN BY AKRAM: what I did and understood, what surprised me, with the figure from my notebook.</p>
   </section>
 
   <section id="sources" class="sources">
     <h2>Sources</h2>
     {{SOURCES}}
-    <p class="attribution">Notions et démo : l'assistant IA. Carnet, figure et mots : Akram, code écrit pas à pas avec l'assistant IA.</p>
+    <p class="attribution">Notions and demo: the AI assistant. Notebook, figure and words: Akram, code written step by step with the AI assistant. English translation of his words: the AI assistant.</p>
   </section>
 </main>
 </body>

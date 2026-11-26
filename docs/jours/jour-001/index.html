@@ -1,52 +1,52 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Jour 1 · La perte et la descente de gradient | Intensive AI Engineering Class</title>
-<meta name="description" content="Un modèle a des paramètres ; la perte chiffre son erreur ; la descente de gradient déplace chaque paramètre à contre-pente, d'un pas proportionnel à la pente.">
+<title>Day 1 · Loss and gradient descent | Intensive AI Engineering Class</title>
+<meta name="description" content="A model has parameters; the loss puts a number on its error; gradient descent moves each parameter against the slope, by a step proportional to the slope.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="../../style.css">
 <style>
-  /* Propre au Jour 1 : deux graphiques côte à côte, empilés sur un téléphone. */
-  .demo-graphes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
-  .demo-graphes figure { gap: 4px; }
-  .demo-graphes h3 { font-size: 0.95rem; }
-  .tableau-des-pas { max-height: 220px; overflow: auto; border: 1px solid var(--filet); border-radius: 8px; }
-  .tableau-des-pas table.chiffres thead th { position: sticky; top: 0; background: var(--surface); }
-  .fleche-pas { stroke: var(--marque); stroke-width: 2; fill: none; }
-  .pointe-pas { fill: var(--marque); }
-  .tangente { stroke: var(--secondaire); stroke-width: 1; }
-  .repere { stroke: var(--neutre); stroke-width: 1; }
-  .alerte { color: var(--texte); font-weight: 600; }
+  /* Day 1 only: two charts side by side, stacked on a phone. */
+  .demo-charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .demo-charts figure { gap: 4px; }
+  .demo-charts h3 { font-size: 0.95rem; }
+  .steps-table { max-height: 220px; overflow: auto; border: 1px solid var(--filet); border-radius: 8px; }
+  .steps-table table.chiffres thead th { position: sticky; top: 0; background: var(--surface); }
+  .step-arrow { stroke: var(--marque); stroke-width: 2; fill: none; }
+  .step-arrowhead { fill: var(--marque); }
+  .tangent { stroke: var(--secondaire); stroke-width: 1; }
+  .marker-line { stroke: var(--neutre); stroke-width: 1; }
+  .warning { color: var(--texte); font-weight: 600; }
   #mots img { display: block; max-width: 100%; height: auto; }
 </style>
 </head>
 <body>
 <main class="page-jour">
-  <p class="retour"><a href="../../index.html">La route des 140 jours</a></p>
+  <p class="retour"><a href="../../index.html">The 140-day route</a></p>
 
   <header class="entete">
-    <p class="surtitre">Jour 1 sur 140 · Phase 1 : Apprendre à partir de données</p>
-    <div class="compteur" role="img" aria-label="Jour 1 sur 140"><span style="width: calc(1 / 140 * 100%)"></span></div>
-    <h1>La perte et la descente de gradient</h1>
-    <p class="chapeau">Un modèle a des paramètres ; la perte chiffre son erreur ; la descente de gradient déplace chaque paramètre à contre-pente, d'un pas proportionnel à la pente.</p>
+    <p class="surtitre">Day 1 of 140 · Phase 1: Learning from data</p>
+    <div class="compteur" role="img" aria-label="Day 1 of 140"><span style="width: calc(1 / 140 * 100%)"></span></div>
+    <h1>Loss and gradient descent</h1>
+    <p class="chapeau">A model has parameters; the loss puts a number on its error; gradient descent moves each parameter against the slope, by a step proportional to the slope.</p>
   </header>
 
   <section id="notions">
     <h2><span class="numero">1</span>Notions</h2>
-    <p>Le cas : trois trajets BIXI et un modèle d'une seule ligne, <code>durée = w × distance</code>. Le paramètre <code>w</code> se lit en minutes par kilomètre. Apprendre, c'est trouver le <code>w</code> qui se trompe le moins sur les trois trajets.</p>
+    <p>The case: three BIXI trips and a one-line model, <code>duration = w × distance</code>. The parameter <code>w</code> reads as minutes per kilometre. Learning means finding the <code>w</code> that is least wrong on all three trips.</p>
 
-    <h3>La perte</h3>
-    <p>On chiffre l'erreur par l'erreur quadratique moyenne : la moyenne des carrés des écarts entre la durée prédite et la durée réelle. Le carré rend tout écart positif et punit plus fort les grosses erreurs. Chaque valeur de <code>w</code> donne une perte : la courbe ci-dessous a la forme d'un creux, et le meilleur <code>w</code> est au fond.</p>
+    <h3>The loss</h3>
+    <p>The error is measured by the mean squared error: the average of the squared gaps between the predicted and the actual duration. Squaring makes every gap positive and punishes large errors harder. Each value of <code>w</code> gives a loss: the curve below is shaped like a valley, and the best <code>w</code> sits at the bottom.</p>
 
     <figure class="carte">
       <div class="defilant">
-        <svg class="schema" viewBox="0 0 560 244" role="img" aria-labelledby="schema-titre schema-desc">
-          <title id="schema-titre">La perte selon w, et un pas de descente</title>
-          <desc id="schema-desc">La perte forme un creux dont le fond est à w ≈ 4,14 min/km. En w = 0, la pente vaut −38,7 ; un pas de 0,05 fait passer w de 0 à 1,93, et la perte de 80,3 à 23,0.</desc>
+        <svg class="schema" viewBox="0 0 560 244" role="img" aria-labelledby="diagram-title diagram-desc">
+          <title id="diagram-title">The loss as a function of w, and one descent step</title>
+          <desc id="diagram-desc">The loss forms a valley whose bottom is at w ≈ 4.14 min/km. At w = 0, the slope is −38.7; a step of 0.05 takes w from 0 to 1.93, and the loss from 80.3 to 23.0.</desc>
           <line class="axe" x1="56" y1="200" x2="536" y2="200"/>
           <line class="axe" x1="56" y1="24" x2="56" y2="200"/>
           <text class="svg-texte" x="104" y="218" text-anchor="middle">0</text>
@@ -54,39 +54,39 @@
           <text class="svg-texte" x="296" y="218" text-anchor="middle">4</text>
           <text class="svg-texte" x="392" y="218" text-anchor="middle">6</text>
           <text class="svg-texte" x="488" y="218" text-anchor="middle">8</text>
-          <text class="svg-texte" x="536" y="238" text-anchor="end">w (minutes par km)</text>
+          <text class="svg-texte" x="536" y="238" text-anchor="end">w (minutes per km)</text>
           <text class="svg-texte" x="48" y="204" text-anchor="end">0</text>
           <text class="svg-texte" x="48" y="150" text-anchor="end">40</text>
           <text class="svg-texte" x="48" y="96" text-anchor="end">80</text>
           <text class="svg-texte" x="48" y="42" text-anchor="end">120</text>
-          <text class="svg-texte" x="64" y="18">perte</text>
-          <!-- La perte est une parabole : une courbe de Bézier quadratique la trace exactement, de w = −1 à w = 9. -->
+          <text class="svg-texte" x="64" y="18">loss</text>
+          <!-- The loss is a parabola: a quadratic Bézier curve draws it exactly, from w = −1 to w = 9. -->
           <path class="trait-contexte" d="M56,32.57 Q296,357.5 536,50.63"/>
-          <line class="tangente" x1="74" y1="58.5" x2="150" y2="141.4"/>
-          <text class="svg-texte-fort" x="82" y="52">pente −38,7</text>
+          <line class="tangent" x1="74" y1="58.5" x2="150" y2="141.4"/>
+          <text class="svg-texte-fort" x="82" y="52">slope −38.7</text>
           <defs>
-            <marker id="pointe" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path class="pointe-pas" d="M0,0 L10,5 L0,10 Z"/>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path class="step-arrowhead" d="M0,0 L10,5 L0,10 Z"/>
             </marker>
           </defs>
-          <line class="fleche-pas" x1="108" y1="95" x2="190" y2="163" marker-end="url(#pointe)"/>
+          <line class="step-arrow" x1="108" y1="95" x2="190" y2="163" marker-end="url(#arrowhead)"/>
           <circle class="point-accent" cx="104" cy="91.24" r="5"/>
           <circle class="point-accent" cx="196.8" cy="168.83" r="5"/>
-          <text class="svg-texte-fort" x="104" y="194">un pas = 1,93</text>
-          <line class="repere" x1="302.9" y1="114" x2="302.9" y2="194"/>
+          <text class="svg-texte-fort" x="104" y="194">one step = 1.93</text>
+          <line class="marker-line" x1="302.9" y1="114" x2="302.9" y2="194"/>
           <circle class="point-contexte" cx="302.9" cy="199.7" r="4.5"/>
-          <text class="svg-texte" x="302.9" y="106" text-anchor="middle">meilleur w ≈ 4,14 min/km</text>
+          <text class="svg-texte" x="302.9" y="106" text-anchor="middle">best w ≈ 4.14 min/km</text>
         </svg>
       </div>
-      <figcaption>En w = 0, la courbe descend vers la droite (pente négative) : on avance donc vers la droite. Plus la pente est raide, plus le pas est long ; près du fond, la pente s'aplatit et les pas raccourcissent d'eux-mêmes.</figcaption>
+      <figcaption>At w = 0, the curve goes down to the right (negative slope), so we move to the right. The steeper the slope, the longer the step; near the bottom, the slope flattens and the steps shorten on their own.</figcaption>
     </figure>
 
-    <h3>Un pas, à la main</h3>
-    <p>On part de <code>w = 0</code>, avec un pas (taux d'apprentissage) de 0,05.</p>
+    <h3>One step, by hand</h3>
+    <p>We start from <code>w = 0</code>, with a step size (learning rate) of 0.05.</p>
     <div class="defilant">
       <table class="chiffres">
         <thead>
-          <tr><th>Trajet</th><th>Distance (km)</th><th>Durée (min)</th><th>Prédiction</th><th>Erreur</th><th>Erreur × distance</th></tr>
+          <tr><th>Trip</th><th>Distance (km)</th><th>Duration (min)</th><th>Prediction</th><th>Error</th><th>Error × distance</th></tr>
         </thead>
         <tbody>
           <tr><td>A</td><td>1</td><td>4</td><td>0</td><td>−4</td><td>−4</td></tr>
@@ -94,243 +94,243 @@
           <tr><td>C</td><td>3</td><td>12</td><td>0</td><td>−12</td><td>−36</td></tr>
         </tbody>
         <tfoot>
-          <tr><td>Moyenne</td><td></td><td></td><td></td><td></td><td>−19,33</td></tr>
+          <tr><td>Mean</td><td></td><td></td><td></td><td></td><td>−19.33</td></tr>
         </tfoot>
       </table>
     </div>
-    <p>La pente de la perte vaut 2 × (−19,33) = −38,67. Le nouveau <code>w</code> vaut 0 − 0,05 × (−38,67) = 1,93 min/km, et la perte passe de 80,3 à 23,0. Au fond du creux, <code>w</code> = 58 ÷ 14 ≈ 4,14 min/km, soit environ 14,5 km/h.</p>
+    <p>The slope of the loss is 2 × (−19.33) = −38.67. The new <code>w</code> is 0 − 0.05 × (−38.67) = 1.93 min/km, and the loss goes from 80.3 to 23.0. At the bottom of the valley, <code>w</code> = 58 ÷ 14 ≈ 4.14 min/km, about 14.5 km/h.</p>
 
-    <h3>La recette</h3>
+    <h3>The recipe</h3>
 <pre class="pseudo">w ← 0
-répéter N fois :
-    erreurs ← w × distances − durées
-    pente   ← 2 × moyenne(erreurs × distances)
-    w       ← w − pas × pente</pre>
+repeat N times:
+    errors ← w × distances − durations
+    slope  ← 2 × mean(errors × distances)
+    w      ← w − step × slope</pre>
 
-    <h3>Le pas décide de tout</h3>
-    <p>Trop petit, il faut des dizaines de pas. Trop grand, chaque pas saute par-dessus le creux et la perte remonte. Ici, la courbure de la perte vaut 28 ÷ 3 ≈ 9,33 : tout pas plus grand que 2 ÷ 9,33 ≈ 0,21 fait diverger la descente.</p>
+    <h3>The step size decides everything</h3>
+    <p>Too small, and it takes dozens of steps. Too large, and each step jumps over the valley and the loss climbs back up. Here, the curvature of the loss is 28 ÷ 3 ≈ 9.33: any step larger than 2 ÷ 9.33 ≈ 0.21 makes the descent diverge.</p>
 
-    <h3>À regarder</h3>
-    <p>StatQuest, <a href="https://www.youtube.com/watch?v=sDv4f4s2SB8">Gradient Descent, Step-by-Step</a>, de 2:00 à 14:35 : un seul paramètre, la pente de la perte, la taille du pas et l'arrêt. À chercher : pourquoi les pas raccourcissent près du fond.</p>
+    <h3>To watch</h3>
+    <p>StatQuest, <a href="https://www.youtube.com/watch?v=sDv4f4s2SB8">Gradient Descent, Step-by-Step</a>, from 2:00 to 14:35: a single parameter, the slope of the loss, the step size and when to stop. What to look for: why the steps get shorter near the bottom.</p>
   </section>
 
   <section id="demo">
-    <h2><span class="numero">2</span>Démo</h2>
+    <h2><span class="numero">2</span>Demo</h2>
     <div class="carte">
-      <div class="commandes" role="group" aria-label="Taille du pas">
-        <span class="lecture">Pas :</span>
-        <button type="button" class="bouton" id="pas-lent" data-pas="0.01" aria-pressed="false">0,01 · lent</button>
-        <button type="button" class="bouton" id="pas-bon" data-pas="0.08" aria-pressed="true">0,08 · bon</button>
-        <button type="button" class="bouton" id="pas-grand" data-pas="0.23" aria-pressed="false">0,23 · trop grand</button>
+      <div class="commandes" role="group" aria-label="Step size">
+        <span class="lecture">Step size:</span>
+        <button type="button" class="bouton" id="rate-slow" data-rate="0.01" aria-pressed="false">0.01 · slow</button>
+        <button type="button" class="bouton" id="rate-good" data-rate="0.08" aria-pressed="true">0.08 · good</button>
+        <button type="button" class="bouton" id="rate-too-large" data-rate="0.23" aria-pressed="false">0.23 · too large</button>
       </div>
       <div class="commandes">
-        <button type="button" class="bouton" id="un-pas">Un pas</button>
-        <button type="button" class="bouton" id="dix-pas">Dix pas</button>
-        <button type="button" class="bouton" id="recommencer">Recommencer</button>
+        <button type="button" class="bouton" id="one-step">One step</button>
+        <button type="button" class="bouton" id="ten-steps">Ten steps</button>
+        <button type="button" class="bouton" id="start-over">Start over</button>
       </div>
-      <p class="lecture" id="lecture" aria-live="polite"></p>
-      <div class="demo-graphes">
+      <p class="lecture" id="reading" aria-live="polite"></p>
+      <div class="demo-charts">
         <figure>
-          <h3>La perte selon w</h3>
-          <svg id="graphe-perte" viewBox="0 0 360 252" role="img" aria-label="La perte selon w, avec chaque pas de la descente"></svg>
+          <h3>The loss as a function of w</h3>
+          <svg id="loss-chart" viewBox="0 0 360 252" role="img" aria-label="The loss as a function of w, with each step of the descent"></svg>
         </figure>
         <figure>
-          <h3>Les trois trajets et la droite du modèle</h3>
-          <svg id="graphe-trajets" viewBox="0 0 360 252" role="img" aria-label="Les trois trajets et la droite durée = w × distance"></svg>
+          <h3>The three trips and the model's line</h3>
+          <svg id="trips-chart" viewBox="0 0 360 252" role="img" aria-label="The three trips and the line duration = w × distance"></svg>
         </figure>
       </div>
-      <div class="tableau-des-pas">
+      <div class="steps-table">
         <table class="chiffres">
-          <thead><tr><th>Étape</th><th>w (min/km)</th><th>Perte</th></tr></thead>
-          <tbody id="corps-des-pas"></tbody>
+          <thead><tr><th>Step</th><th>w (min/km)</th><th>Loss</th></tr></thead>
+          <tbody id="steps-body"></tbody>
         </table>
       </div>
-      <p class="note">Trois trajets fictifs, choisis pour se calculer à la main : A (1 km, 4 min), B (2 km, 9 min), C (3 km, 12 min). En gris, la droite du meilleur w.</p>
+      <p class="note">Three made-up trips, chosen so they can be computed by hand: A (1 km, 4 min), B (2 km, 9 min), C (3 km, 12 min). In grey, the line of the best w.</p>
     </div>
   </section>
 
   <section id="mots">
-    <h2><span class="numero">3</span>Ce que j'ai fait, en mes mots</h2>
-    <p>J'ai codé la mise en situation simplement.</p>
+    <h2><span class="numero">3</span>What I did, in my words</h2>
+    <p>I coded the setup simply.</p>
     <figure>
       <picture>
-        <source srcset="perte_selon_le_pas_sombre.png" media="(prefers-color-scheme: dark)">
-        <img src="perte_selon_le_pas_clair.png" width="1038" height="554" alt="La perte selon l'étape, sur 20 pas depuis w = 0, en échelle log. Avec un pas de 0,08, elle tombe à son plancher de 0,24 en 4 étapes ; avec 0,01, elle descend lentement jusqu'à 1,83 ; avec 0,23, elle monte en droite jusqu'à 19 103.">
+        <source srcset="loss_by_learning_rate_sombre.png" media="(prefers-color-scheme: dark)">
+        <img src="loss_by_learning_rate_clair.png" width="1097" height="554" alt="The loss by step, over 20 steps from w = 0, on a log scale. With a learning rate of 0.08, it falls to its floor of 0.24 within 4 steps; with 0.01, it goes down slowly to 1.83; with 0.23, it climbs in a straight line to 19,103.">
       </picture>
-      <figcaption>La perte selon l'étape, pour trois tailles de pas (20 pas depuis w = 0, échelle log).</figcaption>
+      <figcaption>The loss by step, for three learning rates (20 steps from w = 0, log scale).</figcaption>
     </figure>
-    <p>J'ai compris le processus général de la descente de gradient, plus particulièrement la mécanique du gradient de la perte, et comment, plutôt que d'y aller valeur par valeur (la méthode initiale de la vidéo), on utilise la dérivée de la perte par rapport à la pente et à l'ordonnée à l'origine. On peut ainsi tendre vers le minimum (global ou local, à voir plus tard). Il y a évidemment un enjeu au niveau du pas, et parfois aussi du nombre d'itérations, qui servent de critères d'arrêt. Mais globalement, la notion de fonction de perte reprend l'idée que la perte est un choix, et que le modèle va exploiter les failles s'il y en a.</p>
-    <p>Mon carnet : <a href="https://github.com/akrambouznad789-cyber/intensive-ai-engineering-class/blob/main/docs/jours/jour-001/jour-001.ipynb">jour-001.ipynb</a>.</p>
+    <p>I understood the overall process of gradient descent, especially the mechanics of the gradient of the loss, and how, instead of going value by value (the video's first method), we use the derivative of the loss with respect to the slope and the intercept. That way we can move toward the minimum (global or local, to be seen later). There is of course a question of step size, and sometimes of the number of iterations, which serve as stopping criteria. But overall, the notion of a loss function carries the idea that the loss is a choice, and that the model will exploit its flaws if there are any.</p>
+    <p>My notebook: <a href="https://github.com/akrambouznad789-cyber/intensive-ai-engineering-class/blob/main/docs/jours/jour-001/jour-001.ipynb">jour-001.ipynb</a>.</p>
   </section>
 
   <section id="sources" class="sources">
     <h2>Sources</h2>
     <ul>
-      <li>StatQuest (Josh Starmer), <a href="https://www.youtube.com/watch?v=sDv4f4s2SB8">Gradient Descent, Step-by-Step</a>, de 2:00 à 14:35.</li>
-      <li>3Blue1Brown, <a href="https://www.youtube.com/watch?v=IHZwWFHWa-w">Gradient descent, how neural networks learn</a>, chapitre 2 de la série Deep Learning.</li>
+      <li>StatQuest (Josh Starmer), <a href="https://www.youtube.com/watch?v=sDv4f4s2SB8">Gradient Descent, Step-by-Step</a>, from 2:00 to 14:35.</li>
+      <li>3Blue1Brown, <a href="https://www.youtube.com/watch?v=IHZwWFHWa-w">Gradient descent, how neural networks learn</a>, chapter 2 of the Deep Learning series.</li>
     </ul>
-    <p class="attribution">Notions et démo : l'assistant IA. Carnet, figure et mots : Akram, code écrit pas à pas avec l'assistant IA.</p>
+    <p class="attribution">Notions and demo: the AI assistant. Notebook, figure and words: Akram, code written step by step with the AI assistant. English translation of his words and notebook: the AI assistant.</p>
   </section>
 </main>
 
 <script>
-  const TRAJETS = [
-    { nom: "A", distance: 1, duree: 4 },
-    { nom: "B", distance: 2, duree: 9 },
-    { nom: "C", distance: 3, duree: 12 },
+  const TRIPS = [
+    { name: "A", distance: 1, duration: 4 },
+    { name: "B", distance: 2, duration: 9 },
+    { name: "C", distance: 3, duration: 12 },
   ];
-  const MEILLEUR_W = 58 / 14;          // somme(distance × durée) ÷ somme(distance²)
-  const NOMBRE_MAX_DE_PAS = 60;
+  const BEST_W = 58 / 14;          // sum(distance × duration) ÷ sum(distance²)
+  const MAX_NUMBER_OF_STEPS = 60;
   const SVG = "http://www.w3.org/2000/svg";
-  const ZONE = { gauche: 46, droite: 346, haut: 30, bas: 210 };  // zone de tracé dans un viewBox de 360 × 252
+  const PLOT_AREA = { left: 46, right: 346, top: 30, bottom: 210 };  // plotting area inside a 360 × 252 viewBox
 
-  const moyenne = (valeurs) => valeurs.reduce((somme, valeur) => somme + valeur, 0) / valeurs.length;
-  const perte = (w) => moyenne(TRAJETS.map((t) => (w * t.distance - t.duree) ** 2));
-  const pente = (w) => 2 * moyenne(TRAJETS.map((t) => (w * t.distance - t.duree) * t.distance));
-  const enFrancais = (valeur, decimales) =>
-    valeur.toLocaleString("fr-CA", { minimumFractionDigits: decimales, maximumFractionDigits: decimales });
+  const mean = (values) => values.reduce((sum, value) => sum + value, 0) / values.length;
+  const loss = (w) => mean(TRIPS.map((trip) => (w * trip.distance - trip.duration) ** 2));
+  const slope = (w) => 2 * mean(TRIPS.map((trip) => (w * trip.distance - trip.duration) * trip.distance));
+  const formatNumber = (value, decimals) =>
+    value.toLocaleString("en-CA", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
 
-  let pas = 0.08;
-  let historique = [0];
+  let learningRate = 0.08;
+  let history = [0];
 
-  function echelle(domaineMin, domaineMax, ecranMin, ecranMax) {
-    return (valeur) => ecranMin + ((valeur - domaineMin) / (domaineMax - domaineMin)) * (ecranMax - ecranMin);
+  function scale(domainMin, domainMax, screenMin, screenMax) {
+    return (value) => screenMin + ((value - domainMin) / (domainMax - domainMin)) * (screenMax - screenMin);
   }
 
-  function element(nom, attributs, parent) {
-    const noeud = document.createElementNS(SVG, nom);
-    for (const [cle, valeur] of Object.entries(attributs)) noeud.setAttribute(cle, valeur);
-    if (parent) parent.append(noeud);
-    return noeud;
+  function svgElement(name, attributes, parent) {
+    const node = document.createElementNS(SVG, name);
+    for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
+    if (parent) parent.append(node);
+    return node;
   }
 
-  function texte(parent, contenu, x, y, ancre, classe = "svg-texte") {
-    const noeud = element("text", { x, y, "text-anchor": ancre, class: classe }, parent);
-    noeud.textContent = contenu;
-    return noeud;
+  function svgText(parent, content, x, y, anchor, cssClass = "svg-texte") {
+    const node = svgElement("text", { x, y, "text-anchor": anchor, class: cssClass }, parent);
+    node.textContent = content;
+    return node;
   }
 
-  // Les axes, les graduations et une zone de découpe : ce qui sort du cadre (une descente qui diverge) est coupé.
-  function preparerGraphe(svg, idDecoupe, axeX, axeY) {
+  // Axes, tick labels and a clipping area: whatever leaves the frame (a diverging descent) is cut off.
+  function prepareChart(svg, clipId, xAxis, yAxis) {
     svg.replaceChildren();
-    const defs = element("defs", {}, svg);
-    const decoupe = element("clipPath", { id: idDecoupe }, defs);
-    element("rect", { x: ZONE.gauche, y: ZONE.haut - 6, width: ZONE.droite - ZONE.gauche + 6, height: ZONE.bas - ZONE.haut + 6 }, decoupe);
-    element("line", { class: "axe", x1: ZONE.gauche, y1: ZONE.bas, x2: ZONE.droite, y2: ZONE.bas }, svg);
-    element("line", { class: "axe", x1: ZONE.gauche, y1: ZONE.haut, x2: ZONE.gauche, y2: ZONE.bas }, svg);
-    for (const graduation of axeX.graduations) texte(svg, enFrancais(graduation, 0), axeX.echelle(graduation), ZONE.bas + 17, "middle");
-    for (const graduation of axeY.graduations) texte(svg, enFrancais(graduation, 0), ZONE.gauche - 7, axeY.echelle(graduation) + 4, "end");
-    texte(svg, axeX.titre, ZONE.droite, ZONE.bas + 36, "end");
-    texte(svg, axeY.titre, ZONE.gauche - 7, ZONE.haut - 16, "start");  // au-dessus de la graduation du haut
-    return element("g", { "clip-path": `url(#${idDecoupe})` }, svg);
+    const defs = svgElement("defs", {}, svg);
+    const clip = svgElement("clipPath", { id: clipId }, defs);
+    svgElement("rect", { x: PLOT_AREA.left, y: PLOT_AREA.top - 6, width: PLOT_AREA.right - PLOT_AREA.left + 6, height: PLOT_AREA.bottom - PLOT_AREA.top + 6 }, clip);
+    svgElement("line", { class: "axe", x1: PLOT_AREA.left, y1: PLOT_AREA.bottom, x2: PLOT_AREA.right, y2: PLOT_AREA.bottom }, svg);
+    svgElement("line", { class: "axe", x1: PLOT_AREA.left, y1: PLOT_AREA.top, x2: PLOT_AREA.left, y2: PLOT_AREA.bottom }, svg);
+    for (const tick of xAxis.ticks) svgText(svg, formatNumber(tick, 0), xAxis.scale(tick), PLOT_AREA.bottom + 17, "middle");
+    for (const tick of yAxis.ticks) svgText(svg, formatNumber(tick, 0), PLOT_AREA.left - 7, yAxis.scale(tick) + 4, "end");
+    svgText(svg, xAxis.title, PLOT_AREA.right, PLOT_AREA.bottom + 36, "end");
+    svgText(svg, yAxis.title, PLOT_AREA.left - 7, PLOT_AREA.top - 16, "start");  // above the top tick
+    return svgElement("g", { "clip-path": `url(#${clipId})` }, svg);
   }
 
-  function dessinerPerte() {
-    const x = echelle(-3, 11, ZONE.gauche, ZONE.droite);
-    const y = echelle(0, 240, ZONE.bas, ZONE.haut);
-    const zone = preparerGraphe(
-      document.getElementById("graphe-perte"), "decoupe-perte",
-      { echelle: x, graduations: [-2, 0, 2, 4, 6, 8, 10], titre: "w (min/km)" },
-      { echelle: y, graduations: [0, 80, 160, 240], titre: "perte" },
+  function drawLoss() {
+    const x = scale(-3, 11, PLOT_AREA.left, PLOT_AREA.right);
+    const y = scale(0, 240, PLOT_AREA.bottom, PLOT_AREA.top);
+    const area = prepareChart(
+      document.getElementById("loss-chart"), "loss-clip",
+      { scale: x, ticks: [-2, 0, 2, 4, 6, 8, 10], title: "w (min/km)" },
+      { scale: y, ticks: [0, 80, 160, 240], title: "loss" },
     );
     const points = [];
     for (let i = 0; i <= 140; i += 1) {
       const w = -3 + (14 * i) / 140;
-      points.push(`${x(w).toFixed(1)},${y(perte(w)).toFixed(1)}`);
+      points.push(`${x(w).toFixed(1)},${y(loss(w)).toFixed(1)}`);
     }
-    element("polyline", { class: "trait-contexte", points: points.join(" ") }, zone);
-    element("circle", { class: "point-contexte", cx: x(MEILLEUR_W), cy: y(perte(MEILLEUR_W)), r: 4 }, zone);
-    element("polyline", {
+    svgElement("polyline", { class: "trait-contexte", points: points.join(" ") }, area);
+    svgElement("circle", { class: "point-contexte", cx: x(BEST_W), cy: y(loss(BEST_W)), r: 4 }, area);
+    svgElement("polyline", {
       class: "trait-accent",
-      points: historique.map((w) => `${x(w).toFixed(1)},${y(perte(w)).toFixed(1)}`).join(" "),
-    }, zone);
-    historique.forEach((w, etape) => {
-      const groupe = element("g", {}, zone);
-      const infobulle = element("title", {}, groupe);
-      infobulle.textContent = `Étape ${etape} : w = ${enFrancais(w, 2)}, perte = ${enFrancais(perte(w), 1)}`;
-      element("circle", { cx: x(w), cy: y(perte(w)), r: 12, fill: "transparent" }, groupe);  // cible de survol plus large que le point
-      element("circle", { class: "point-accent", cx: x(w), cy: y(perte(w)), r: etape === historique.length - 1 ? 5.5 : 4 }, groupe);
+      points: history.map((w) => `${x(w).toFixed(1)},${y(loss(w)).toFixed(1)}`).join(" "),
+    }, area);
+    history.forEach((w, step) => {
+      const group = svgElement("g", {}, area);
+      const tooltip = svgElement("title", {}, group);
+      tooltip.textContent = `Step ${step}: w = ${formatNumber(w, 2)}, loss = ${formatNumber(loss(w), 1)}`;
+      svgElement("circle", { cx: x(w), cy: y(loss(w)), r: 12, fill: "transparent" }, group);  // hover target wider than the dot
+      svgElement("circle", { class: "point-accent", cx: x(w), cy: y(loss(w)), r: step === history.length - 1 ? 5.5 : 4 }, group);
     });
   }
 
-  function dessinerTrajets() {
-    const x = echelle(0, 3.5, ZONE.gauche, ZONE.droite);
-    const y = echelle(0, 20, ZONE.bas, ZONE.haut);
-    const zone = preparerGraphe(
-      document.getElementById("graphe-trajets"), "decoupe-trajets",
-      { echelle: x, graduations: [0, 1, 2, 3], titre: "distance (km)" },
-      { echelle: y, graduations: [0, 5, 10, 15, 20], titre: "durée (min)" },
+  function drawTrips() {
+    const x = scale(0, 3.5, PLOT_AREA.left, PLOT_AREA.right);
+    const y = scale(0, 20, PLOT_AREA.bottom, PLOT_AREA.top);
+    const area = prepareChart(
+      document.getElementById("trips-chart"), "trips-clip",
+      { scale: x, ticks: [0, 1, 2, 3], title: "distance (km)" },
+      { scale: y, ticks: [0, 5, 10, 15, 20], title: "duration (min)" },
     );
-    const w = historique[historique.length - 1];
-    element("line", { class: "trait-contexte", x1: x(0), y1: y(0), x2: x(3.5), y2: y(3.5 * MEILLEUR_W) }, zone);
-    element("line", { class: "trait-accent", x1: x(0), y1: y(0), x2: x(3.5), y2: y(3.5 * w) }, zone);
-    for (const trajet of TRAJETS) {
-      const groupe = element("g", {}, zone);
-      const infobulle = element("title", {}, groupe);
-      infobulle.textContent = `Trajet ${trajet.nom} : ${trajet.distance} km, ${trajet.duree} min ; le modèle prédit ${enFrancais(w * trajet.distance, 1)} min`;
-      element("circle", { cx: x(trajet.distance), cy: y(trajet.duree), r: 12, fill: "transparent" }, groupe);
-      element("circle", { class: "point-contexte", cx: x(trajet.distance), cy: y(trajet.duree), r: 5 }, groupe);
-      texte(zone, trajet.nom, x(trajet.distance) - 10, y(trajet.duree) - 8, "end", "svg-texte-fort");
+    const w = history[history.length - 1];
+    svgElement("line", { class: "trait-contexte", x1: x(0), y1: y(0), x2: x(3.5), y2: y(3.5 * BEST_W) }, area);
+    svgElement("line", { class: "trait-accent", x1: x(0), y1: y(0), x2: x(3.5), y2: y(3.5 * w) }, area);
+    for (const trip of TRIPS) {
+      const group = svgElement("g", {}, area);
+      const tooltip = svgElement("title", {}, group);
+      tooltip.textContent = `Trip ${trip.name}: ${trip.distance} km, ${trip.duration} min; the model predicts ${formatNumber(w * trip.distance, 1)} min`;
+      svgElement("circle", { cx: x(trip.distance), cy: y(trip.duration), r: 12, fill: "transparent" }, group);
+      svgElement("circle", { class: "point-contexte", cx: x(trip.distance), cy: y(trip.duration), r: 5 }, group);
+      svgText(area, trip.name, x(trip.distance) - 10, y(trip.duration) - 8, "end", "svg-texte-fort");
     }
   }
 
-  function remplirTableau() {
-    const corps = document.getElementById("corps-des-pas");
-    corps.replaceChildren();
-    historique.forEach((w, etape) => {
-      const ligne = document.createElement("tr");
-      for (const valeur of [String(etape), enFrancais(w, 3), enFrancais(perte(w), 2)]) {
-        const cellule = document.createElement("td");
-        cellule.textContent = valeur;
-        ligne.append(cellule);
+  function fillTable() {
+    const body = document.getElementById("steps-body");
+    body.replaceChildren();
+    history.forEach((w, step) => {
+      const row = document.createElement("tr");
+      for (const value of [String(step), formatNumber(w, 3), formatNumber(loss(w), 2)]) {
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        row.append(cell);
       }
-      corps.append(ligne);
+      body.append(row);
     });
   }
 
-  function mettreAJour() {
-    const w = historique[historique.length - 1];
-    const etape = historique.length - 1;
-    const valeurPerte = perte(w);
-    const lecture = document.getElementById("lecture");
-    lecture.replaceChildren();
-    const fort = document.createElement("strong");
-    fort.textContent = `Étape ${etape} · w = ${enFrancais(w, 2)} min/km · perte = ${enFrancais(valeurPerte, 1)}`;
-    lecture.append(fort);
-    if (valeurPerte > perte(0) && etape > 0) {
-      const alerte = document.createElement("span");
-      alerte.className = "alerte";
-      alerte.textContent = " · la perte remonte : le pas saute par-dessus le creux";
-      lecture.append(alerte);
-    } else if (Math.abs(w - MEILLEUR_W) < 0.01) {
-      lecture.append(document.createTextNode(" · au fond du creux"));
+  function update() {
+    const w = history[history.length - 1];
+    const step = history.length - 1;
+    const lossValue = loss(w);
+    const reading = document.getElementById("reading");
+    reading.replaceChildren();
+    const strong = document.createElement("strong");
+    strong.textContent = `Step ${step} · w = ${formatNumber(w, 2)} min/km · loss = ${formatNumber(lossValue, 1)}`;
+    reading.append(strong);
+    if (lossValue > loss(0) && step > 0) {
+      const warning = document.createElement("span");
+      warning.className = "warning";
+      warning.textContent = " · the loss is climbing: each step jumps over the valley";
+      reading.append(warning);
+    } else if (Math.abs(w - BEST_W) < 0.01) {
+      reading.append(document.createTextNode(" · at the bottom of the valley"));
     }
-    dessinerPerte();
-    dessinerTrajets();
-    remplirTableau();
+    drawLoss();
+    drawTrips();
+    fillTable();
   }
 
-  function avancer(nombreDePas) {
-    for (let i = 0; i < nombreDePas && historique.length <= NOMBRE_MAX_DE_PAS; i += 1) {
-      const w = historique[historique.length - 1];
-      historique.push(w - pas * pente(w));
+  function advance(numberOfSteps) {
+    for (let i = 0; i < numberOfSteps && history.length <= MAX_NUMBER_OF_STEPS; i += 1) {
+      const w = history[history.length - 1];
+      history.push(w - learningRate * slope(w));
     }
-    mettreAJour();
+    update();
   }
 
-  for (const bouton of document.querySelectorAll("[data-pas]")) {
-    bouton.addEventListener("click", () => {
-      pas = Number(bouton.dataset.pas);
-      for (const autre of document.querySelectorAll("[data-pas]")) autre.setAttribute("aria-pressed", String(autre === bouton));
-      historique = [0];
-      mettreAJour();
+  for (const button of document.querySelectorAll("[data-rate]")) {
+    button.addEventListener("click", () => {
+      learningRate = Number(button.dataset.rate);
+      for (const other of document.querySelectorAll("[data-rate]")) other.setAttribute("aria-pressed", String(other === button));
+      history = [0];
+      update();
     });
   }
-  document.getElementById("un-pas").addEventListener("click", () => avancer(1));
-  document.getElementById("dix-pas").addEventListener("click", () => avancer(10));
-  document.getElementById("recommencer").addEventListener("click", () => { historique = [0]; mettreAJour(); });
+  document.getElementById("one-step").addEventListener("click", () => advance(1));
+  document.getElementById("ten-steps").addEventListener("click", () => advance(10));
+  document.getElementById("start-over").addEventListener("click", () => { history = [0]; update(); });
 
-  avancer(3);  // la démo s'ouvre sur trois pas déjà faits
+  advance(3);  // the demo opens with three steps already taken
 </script>
 </body>
 </html>
