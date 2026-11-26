@@ -7,7 +7,7 @@
 <meta name="description" content="A model has parameters; the loss puts a number on its error; gradient descent moves each parameter against the slope, by a step proportional to the slope.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..600;1,300..600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap">
 <link rel="stylesheet" href="../../style.css">
 <style>
   /* Day 1 only: two charts side by side, stacked on a phone. */
@@ -26,7 +26,13 @@
 </head>
 <body>
 <main class="page-jour">
-  <p class="retour"><a href="../../index.html">The 140-day route</a></p>
+  <nav class="barre" aria-label="Related pages">
+    <a class="signature" href="https://akrambouznad789-cyber.github.io/"><svg viewBox="0 0 30 10" aria-hidden="true"><circle cx="4" cy="5" r="3.2" fill="currentColor"/><line x1="7.6" y1="5" x2="22.4" y2="5" stroke="currentColor" stroke-width="1.4"/><circle cx="26" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>akram bouznad</a>
+    <ul class="liens-haut">
+      <li><a href="../../index.html">← The 140-day route</a></li>
+      <li><a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">Roadmap</a></li>
+    </ul>
+  </nav>
 
   <header class="entete">
     <p class="surtitre">Day 1 of 140 · Phase 1: Learning from data</p>
@@ -153,10 +159,7 @@ repeat N times:
     <h2><span class="numero">3</span>What I did, in my words</h2>
     <p>I coded the setup simply.</p>
     <figure>
-      <picture>
-        <source srcset="loss_by_learning_rate_sombre.png" media="(prefers-color-scheme: dark)">
-        <img src="loss_by_learning_rate_clair.png" width="1097" height="554" alt="The loss by step, over 20 steps from w = 0, on a log scale. With a learning rate of 0.08, it falls to its floor of 0.24 within 4 steps; with 0.01, it goes down slowly to 1.83; with 0.23, it climbs in a straight line to 19,103.">
-      </picture>
+      <img src="loss_by_learning_rate_sombre.png" width="1092" height="566" alt="The loss by step, over 20 steps from w = 0, on a log scale. With a learning rate of 0.08, it falls to its floor of 0.24 within 4 steps; with 0.01, it goes down slowly to 1.83; with 0.23, it climbs in a straight line to 19,103.">
       <figcaption>The loss by step, for three learning rates (20 steps from w = 0, log scale).</figcaption>
     </figure>
     <p>I understood the overall process of gradient descent, especially the mechanics of the gradient of the loss, and how, instead of going value by value (the video's first method), we use the derivative of the loss with respect to the slope and the intercept. That way we can move toward the minimum (global or local, to be seen later). There is of course a question of step size, and sometimes of the number of iterations, which serve as stopping criteria. But overall, the notion of a loss function carries the idea that the loss is a choice, and that the model will exploit its flaws if there are any.</p>

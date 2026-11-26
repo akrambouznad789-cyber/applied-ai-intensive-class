@@ -1,37 +1,31 @@
-/* Pages des deux classes intensives : la route des 140 jours et une fiche de cahier par jour.
+/* Pages des deux classes intensives : la route des 140 jours et une fiche par jour.
    Le même fichier sert aux deux classes : une retouche ici se reporte dans l'autre classe.
-   Une colonne de lecture d'environ 70 caractères ; la démo déborde un peu sur les grands écrans.
-   Charte « Quiet Light indigo » : le thème Quiet Light de VS Code, violet tiré vers le bleu ;
-   IBM Plex Sans pour le texte, IBM Plex Mono pour le code et les chiffres. */
+   Identité « Route de nuit » : un graphite bleuté, une ligne ambre comme une route la nuit, des courbes de niveau.
+   Newsreader (titres), Hanken Grotesk en poids fins (texte), IBM Plex Mono (étiquettes, chiffres, code).
+   Sombre seulement : la même ambiance d'une page à l'autre, sur la vitrine, la page d'accueil et les deux classes. */
 :root {
-  --fond: #F5F5F5;
-  --surface: #FFFFFF;
-  --texte: #333333;
-  --secondaire: #6B6B7E;
-  --filet: #D9D9E3;
-  --accent: #4F4FC4;      /* liens, compteur, focus */
-  --marque: #4F4FC4;      /* série 1 des graphiques : ce qu'on veut montrer */
-  --serie-2: #C0702A;
-  --serie-3: #008B7E;
-  --neutre: #C9C9D6;      /* le contexte dans un graphique */
-  --police-texte: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --fond: #232830;
+  --surface: #2A3039;
+  --relief: #323944;
+  --texte: #ECE7DD;
+  --secondaire: #AAB2BE;
+  --discret: #959EAC;       /* étiquettes en mono : 4,5:1 au moins sur le fond et les surfaces */
+  --filet: #3B4350;
+  --filet-fort: #4E5866;
+  --signature: #EDBA5C;     /* l'ambre de l'identité : la marque, les numéros */
+  --accent: #EDBA5C;        /* liens et focus */
+  --marque: #CB9027;        /* série 1 des graphiques et couleur de la classe : ce qu'on veut montrer */
+  --serie-2: #2FAE9D;       /* sarcelle : la classe Inférence */
+  --serie-3: #5E8FE6;       /* bleu : la recherche */
+  --neutre: #5B6473;        /* le contexte dans un graphique */
+  --sur-marque: #1B1F26;    /* texte posé sur un aplat de couleur */
+  --police-titre: "Newsreader", Georgia, "Times New Roman", serif;
+  --police-texte: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
   --police-code: "IBM Plex Mono", ui-monospace, Consolas, monospace;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --fond: #1C1C24; --surface: #262632; --texte: #E6E6EE; --secondaire: #A3A3B5; --filet: #3A3A4A;
-    --accent: #9C9CF2; --marque: #7C7CE8; --serie-2: #C47A38; --serie-3: #2FA898; --neutre: #4A4A5E;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --fond: #1C1C24; --surface: #262632; --texte: #E6E6EE; --secondaire: #A3A3B5; --filet: #3A3A4A;
-  --accent: #9C9CF2; --marque: #7C7CE8; --serie-2: #C47A38; --serie-3: #2FA898; --neutre: #4A4A5E;
   color-scheme: dark;
 }
-/* La classe Inférence marque ses jours en sarcelle (série 3) ; les liens restent indigo. */
-.classe-inference { --marque: var(--serie-3); }
+/* La classe Inférence prend la sarcelle pour ses jours et ses liens ; la marque reste ambre. */
+.classe-inference { --marque: var(--serie-2); --accent: #5CC9B8; }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -42,48 +36,82 @@ body {
   background: var(--fond);
   color: var(--texte);
   font-family: var(--police-texte);
+  font-weight: 300;
   font-size: 17px;
-  line-height: 1.6;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+::selection { background: color-mix(in oklab, var(--signature) 35%, transparent); }
+img { max-width: 100%; height: auto; }
 .page-jour, .page-jours {
   max-width: 46rem;
   margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 32px 64px;
+  padding-block: 22px 72px;
   display: grid;
-  gap: 48px;
+  gap: 52px;
 }
 .page-jour > *, .page-jours > * { min-width: 0; }
-h1, h2, h3 { margin: 0; line-height: 1.15; text-wrap: balance; }
-h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); font-weight: 700; letter-spacing: -0.01em; }
-h2 { font-size: 1.35rem; font-weight: 700; }
-h3 { font-size: 1.05rem; font-weight: 600; }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-family: var(--police-titre); font-weight: 400; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.3rem, 6vw, 3.3rem); line-height: 1.05; font-weight: 300; }
+h2 { font-size: 1.6rem; line-height: 1.15; }
+h3 { font-size: 1.18rem; line-height: 1.25; }
+strong, b { font-weight: 500; }
 p, ul, ol { margin: 0; }
 ul, ol { padding-left: 1.3em; display: grid; gap: 6px; }
-a { color: var(--accent); text-underline-offset: 3px; }
-a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-code { font-family: var(--police-code); font-size: 0.9em; overflow-wrap: anywhere; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--accent) 45%, transparent); }
+a:hover { text-decoration-color: var(--accent); }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+code { font-family: var(--police-code); font-size: 0.86em; font-weight: 400; background: var(--relief); padding: 0.08em 0.35em; border-radius: 2px; overflow-wrap: anywhere; }
 
-/* En-tête du jour */
-.retour { font-family: var(--police-code); font-size: 0.85rem; }
-.entete { display: grid; gap: 12px; }
-.surtitre { font-family: var(--police-code); font-size: 0.82rem; color: var(--secondaire); letter-spacing: 0.02em; }
-.compteur { height: 6px; border-radius: 3px; background: color-mix(in oklab, var(--marque) 16%, var(--surface)); overflow: hidden; }
-.compteur span { display: block; height: 100%; border-radius: 3px; background: var(--marque); }
-.chapeau { font-size: 1.15rem; max-width: 62ch; }
+/* Barre du haut, la même sur tous les sites : la marque (deux nœuds et une arête) à gauche, les liens à droite. */
+.barre {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px;
+  padding-bottom: 14px; border-bottom: 1px solid var(--filet);
+}
+.signature {
+  display: inline-flex; align-items: center; gap: 10px; color: var(--texte); text-decoration: none;
+  font: 500 0.78rem/1 var(--police-code); letter-spacing: 0.06em;
+}
+.signature svg { width: 30px; height: 10px; color: var(--signature); flex: none; }
+.liens-haut { display: flex; flex-wrap: wrap; gap: 6px 22px; list-style: none; padding: 0; margin: 0; }
+.liens-haut a, .retour a {
+  font: 400 0.72rem/1.4 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--secondaire); text-decoration: none;
+}
+.liens-haut a:hover, .retour a:hover { color: var(--texte); }
 
-/* Sections numérotées : l'ordre de la journée (notions, démo, pratique, mots) */
-.page-jour section { display: grid; gap: 16px; }
+/* En-tête : courbes de niveau discrètes, de la couleur de la classe. */
+.entete { display: grid; gap: 14px; position: relative; isolation: isolate; padding-top: 10px; }
+.entete::before {
+  content: ""; position: absolute; z-index: -1; top: -6px; right: 0; width: min(400px, 72%); height: 210px;
+  background: var(--marque); opacity: 0.15; pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 230' fill='none' stroke='black' stroke-width='1'%3E%3Cg transform='translate(300 108)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(5) scale(.8)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(10) scale(.61)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(16) scale(.43)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(23) scale(.26)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-8) scale(.5)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-2) scale(.3)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 230' fill='none' stroke='black' stroke-width='1'%3E%3Cg transform='translate(300 108)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(5) scale(.8)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(10) scale(.61)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(16) scale(.43)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(23) scale(.26)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-8) scale(.5)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-2) scale(.3)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top / contain;
+}
+.surtitre { font: 400 0.72rem/1.5 var(--police-code); letter-spacing: 0.12em; text-transform: uppercase; color: var(--discret); }
+.chapeau { font-size: 1.1rem; color: var(--secondaire); max-width: 60ch; }
+/* Le compteur du jour : une route, et un nœud là où on en est. */
+.compteur { height: 2px; background: var(--filet); position: relative; margin-block: 4px; }
+.compteur span { display: block; height: 100%; background: var(--marque); position: relative; }
+.compteur span::after {
+  content: ""; position: absolute; right: -5px; top: -4px; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--marque); box-shadow: 0 0 0 3px var(--fond);
+}
+
+/* Sections numérotées : l'ordre de la journée (notions, démo, mots, sources) */
+.page-jour section { display: grid; gap: 18px; padding-top: 30px; border-top: 1px solid var(--filet); }
 .page-jour section > * { min-width: 0; }
-.numero { font-family: var(--police-code); font-weight: 500; color: var(--secondaire); margin-right: 10px; }
+.numero { font: 500 0.72rem/1 var(--police-code); letter-spacing: 0.1em; color: var(--marque); margin-right: 14px; vertical-align: 0.32em; }
 .page-jour p { max-width: 68ch; }
 
 /* Encadrés : seuls le schéma et la démo sont des objets à part */
-.carte { background: var(--surface); border: 1px solid var(--filet); border-radius: 10px; padding: 18px; display: grid; gap: 14px; }
+.carte { background: var(--surface); border: 1px solid var(--filet); border-radius: 3px; padding: 20px; display: grid; gap: 14px; }
 @media (min-width: 64rem) { #demo .carte { margin-inline: -4rem; } }
 figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
-figcaption, .note { color: var(--secondaire); font-size: 0.9rem; }
+figcaption, .note { color: var(--secondaire); font-size: 0.88rem; }
 .defilant { overflow-x: auto; }
 .defilant svg { display: block; width: 100%; height: auto; }
 /* Un schéma garde un texte lisible sur téléphone : il défile de côté plutôt que de rétrécir. */
@@ -91,121 +119,130 @@ figcaption, .note { color: var(--secondaire); font-size: 0.9rem; }
 
 /* Pseudo-code : la recette à recopier dans le cahier */
 pre.pseudo {
-  margin: 0; padding: 14px 16px; overflow-x: auto;
-  font-family: var(--police-code); font-size: 0.9rem; line-height: 1.55;
-  background: var(--surface); border: 1px solid var(--filet); border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+  margin: 0; padding: 16px 18px; overflow-x: auto;
+  font-family: var(--police-code); font-size: 0.86rem; line-height: 1.6;
+  background: var(--surface); border: 1px solid var(--filet); border-left: 2px solid var(--marque); border-radius: 0 3px 3px 0;
 }
 
-/* Tableaux de chiffres */
-table.chiffres { border-collapse: collapse; width: 100%; font-size: 0.93rem; font-variant-numeric: tabular-nums; }
-table.chiffres th { font-family: var(--police-code); font-weight: 500; font-size: 0.78rem; color: var(--secondaire); text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--filet); }
-table.chiffres td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--filet); white-space: nowrap; }
+/* Tableaux de chiffres : les nombres en mono, alignés à droite */
+table.chiffres { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+table.chiffres th { font: 400 0.68rem/1.4 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase; color: var(--discret); text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--filet-fort); }
+table.chiffres td { font: 400 0.86rem/1.5 var(--police-code); text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--filet); white-space: nowrap; }
 table.chiffres th:first-child, table.chiffres td:first-child { text-align: left; }
-table.chiffres tfoot td { border-bottom: none; font-weight: 600; }
+table.chiffres tfoot td { border-bottom: none; color: var(--signature); font-weight: 500; }
 
 /* Ce qui reste à écrire par Akram */
-.a-ecrire { border: 1px dashed var(--filet); border-radius: 8px; padding: 12px 14px; color: var(--secondaire); font-style: italic; }
+.a-ecrire { border: 1px dashed var(--filet-fort); border-radius: 3px; padding: 12px 14px; color: var(--secondaire); font-style: italic; }
 
 /* Commandes des démos */
 .commandes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .bouton {
-  font: 600 0.9rem/1 var(--police-texte); padding: 9px 14px 8px; border-radius: 999px;
-  border: 1px solid var(--filet); background: var(--surface); color: var(--texte); cursor: pointer;
+  font: 500 0.72rem/1 var(--police-code); letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 10px 14px 9px; border-radius: 2px; border: 1px solid var(--filet-fort);
+  background: transparent; color: var(--texte); cursor: pointer;
 }
-.bouton:hover { border-color: var(--secondaire); }
-.bouton[aria-pressed="true"] { background: var(--texte); color: var(--surface); border-color: var(--texte); }
-.lecture { font-family: var(--police-code); font-size: 0.88rem; color: var(--secondaire); }
+.bouton:hover { border-color: var(--marque); color: var(--accent); }
+.bouton[aria-pressed="true"] { background: var(--marque); color: var(--sur-marque); border-color: var(--marque); }
+.lecture { font-family: var(--police-code); font-size: 0.82rem; color: var(--secondaire); }
 .lecture strong { color: var(--texte); font-weight: 500; }
-.curseur { display: inline-flex; align-items: center; gap: 8px; margin-right: 14px; font-family: var(--police-code); font-size: 0.88rem; }
+.curseur { display: inline-flex; align-items: center; gap: 8px; margin-right: 14px; font-family: var(--police-code); font-size: 0.82rem; }
 .curseur output { min-width: 1.2em; color: var(--texte); }
 .curseur input { accent-color: var(--marque); }
 
 /* Graphiques en SVG : textes aux couleurs du thème, marques fines */
-.axe { stroke: var(--filet); stroke-width: 1; }
-.svg-texte { font-family: var(--police-code); font-size: 12px; fill: var(--secondaire); }
-.svg-texte-fort { font-family: var(--police-code); font-size: 12px; fill: var(--texte); }
+.axe { stroke: var(--filet-fort); stroke-width: 1; }
+.svg-texte { font-family: var(--police-code); font-size: 11.5px; fill: var(--secondaire); }
+.svg-texte-fort { font-family: var(--police-code); font-size: 11.5px; fill: var(--texte); }
 .trait-contexte { fill: none; stroke: var(--neutre); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .trait-accent { fill: none; stroke: var(--marque); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .point-accent { fill: var(--marque); stroke: var(--surface); stroke-width: 2; }
 .point-contexte { fill: var(--secondaire); stroke: var(--surface); stroke-width: 2; }
-.boite { fill: var(--surface); stroke: var(--filet); stroke-width: 1.2; }
-.boite-accent { fill: var(--surface); stroke: var(--marque); stroke-width: 1.6; }
-.fleche { stroke: var(--secondaire); stroke-width: 1.4; fill: none; }
+.boite { fill: var(--surface); stroke: var(--filet-fort); stroke-width: 1; }
+.boite-accent { fill: var(--surface); stroke: var(--marque); stroke-width: 1.4; }
+.fleche { stroke: var(--secondaire); stroke-width: 1.2; fill: none; }
 .pointe { fill: var(--secondaire); }
 
-.sources ul { font-size: 0.95rem; }
-.attribution { color: var(--secondaire); font-size: 0.85rem; }
+.attribution { color: var(--discret); font-size: 0.82rem; }
 
-/* Sources : une carte par ressource (vidéo, lecture, article), avec le passage précis et un bouton qui y mène.
+/* Sources : une grille de cartes à filets, une par ressource, avec le passage précis et un lien qui y mène.
    Jamais de capture d'écran d'une ressource : la carte renvoie à l'original. */
-.cartes-sources { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.cartes-sources {
+  list-style: none; padding: 0; margin: 0; display: grid; gap: 0;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  border-top: 1px solid var(--filet); border-left: 1px solid var(--filet);
+}
 .carte-source {
-  background: var(--surface); border: 1px solid var(--filet); border-top: 3px solid var(--marque); border-radius: 10px;
-  padding: 14px 16px; display: grid; gap: 6px; align-content: start;
+  border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet);
+  padding: 18px 18px 16px; display: grid; gap: 8px; align-content: start; transition: background 0.15s;
 }
-.type-source { display: flex; align-items: center; gap: 6px; font-family: var(--police-code); font-size: 0.76rem; color: var(--secondaire); text-transform: uppercase; letter-spacing: 0.04em; }
-.type-source svg { width: 14px; height: 14px; color: var(--marque); flex: none; }
-.carte-source h3 { font-size: 1rem; line-height: 1.3; }
-.passage { font-family: var(--police-code); font-size: 0.85rem; color: var(--secondaire); }
-.citation { font-size: 0.9rem; font-style: italic; border-left: 2px solid var(--filet); padding-left: 10px; }
+.carte-source:hover { background: var(--surface); }
+.type-source { display: flex; align-items: center; gap: 8px; font: 400 0.68rem/1.4 var(--police-code); letter-spacing: 0.12em; text-transform: uppercase; color: var(--discret); }
+.type-source svg { width: 13px; height: 13px; color: var(--marque); flex: none; }
+.carte-source h3 { font-size: 1.12rem; line-height: 1.3; }
+.passage { font: 400 0.78rem/1.5 var(--police-code); color: var(--secondaire); }
+.citation { font-family: var(--police-titre); font-style: italic; font-size: 1.02rem; border-left: 1px solid var(--marque); padding-left: 12px; }
 .bouton-source {
-  justify-self: start; margin-top: 4px; font: 600 0.88rem/1 var(--police-texte); padding: 8px 13px 7px; border-radius: 999px;
-  border: 1px solid var(--marque); color: var(--texte); text-decoration: none;
+  justify-self: start; margin-top: 4px; font: 500 0.7rem/1 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none;
 }
-.bouton-source:hover { background: color-mix(in oklab, var(--marque) 14%, var(--surface)); }
+.bouton-source:hover { text-decoration: underline; }
 
-/* Page de la route : liens du haut, la ligne des phases, une rangée de cases par phase */
-.liens-haut { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
-.liens-haut a {
-  display: inline-block; font: 600 0.88rem/1 var(--police-texte); padding: 8px 12px 7px; border-radius: 999px;
-  border: 1px solid var(--filet); background: var(--surface); color: var(--texte); text-decoration: none;
-}
-.liens-haut a:hover { border-color: var(--texte); }
-/* Un segment par phase, large comme son nombre de jours (--jours, posé sur chaque segment). */
-.ligne-phases { display: flex; gap: 3px; list-style: none; padding: 0; }
+/* Page de la route : la ligne des phases comme une ligne de transport, une rangée de cases par phase */
+.ligne-phases { display: flex; gap: 4px; list-style: none; padding: 0; margin: 0; }
 .ligne-phases li { flex: var(--jours) 1 0; min-width: 0; }
 .ligne-phases a {
-  display: grid; place-items: center; height: 34px; border-radius: 6px; text-decoration: none;
-  background: color-mix(in oklab, var(--marque) 14%, var(--surface));
-  border: 1px solid color-mix(in oklab, var(--marque) 40%, var(--surface));
-  color: var(--texte); font: 500 0.82rem/1 var(--police-code);
+  display: block; position: relative; padding-top: 14px; text-decoration: none;
+  border-top: 3px solid color-mix(in oklab, var(--marque) 55%, var(--fond));
+  color: var(--secondaire); font: 500 0.72rem/1 var(--police-code);
 }
-.ligne-phases a:hover { background: color-mix(in oklab, var(--marque) 28%, var(--surface)); }
-.reperes-jours { display: flex; justify-content: space-between; font-family: var(--police-code); font-size: 0.78rem; color: var(--secondaire); }
-.page-jours section { display: grid; gap: 16px; }
+/* Une station au départ de chaque phase. */
+.ligne-phases a::before {
+  content: ""; position: absolute; left: -2px; top: -8px; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--fond); border: 2px solid var(--marque);
+}
+.ligne-phases a:hover { color: var(--texte); border-top-color: var(--marque); }
+.reperes-jours { display: flex; justify-content: space-between; font: 400 0.68rem/1 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase; color: var(--discret); }
+.page-jours section { display: grid; gap: 18px; }
 .page-jours section > * { min-width: 0; }
-.compte { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.compte strong { font-size: 3rem; font-weight: 700; line-height: 1; }
+.compte { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.compte strong { font-family: var(--police-titre); font-size: 4.2rem; font-weight: 300; line-height: 1; color: var(--texte); }
 .compte span { color: var(--secondaire); }
-.phases { display: grid; gap: 22px; }
-.phase { display: grid; gap: 8px; scroll-margin-top: 16px; }
-.phase h3 { font-size: 0.98rem; }
-.phase h3 .numero { font-size: 0.85rem; }
+.phases { display: grid; gap: 0; border-top: 1px solid var(--filet); }
+.phase { display: grid; gap: 10px; padding-block: 18px; border-bottom: 1px solid var(--filet); scroll-margin-top: 16px; }
+.phase h3 { font-size: 1.15rem; }
+.phase h3 .numero { vertical-align: 0.2em; }
 .phase .contenu { color: var(--secondaire); font-size: 0.92rem; max-width: 68ch; }
-.cases { display: flex; flex-wrap: wrap; gap: 5px; list-style: none; padding: 0; }
+.cases { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; padding: 0; }
 .case {
-  position: relative; display: block; width: 22px; height: 22px; border-radius: 4px;
-  border: 1px solid var(--filet); background: var(--surface);
+  position: relative; display: block; width: 18px; height: 18px; border-radius: 2px;
+  border: 1px solid var(--filet-fort); background: transparent;
 }
 .case.faite { background: var(--marque); border-color: var(--marque); }
 /* Un jour de projet porte un losange : la forme dit le projet, pas la couleur seule. */
 .case.projet::after {
-  content: ""; position: absolute; left: 50%; top: 50%; width: 7px; height: 7px;
-  transform: translate(-50%, -50%) rotate(45deg); background: var(--secondaire);
+  content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px;
+  transform: translate(-50%, -50%) rotate(45deg); background: var(--discret);
 }
-.case.faite.projet::after { background: var(--surface); }
-a.case:hover { outline: 2px solid var(--texte); outline-offset: 1px; }
-.legende { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--secondaire); font-size: 0.88rem; align-items: center; }
+.case.faite.projet::after { background: var(--sur-marque); }
+a.case:hover { outline: 1px solid var(--texte); outline-offset: 2px; }
+.legende { display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--secondaire); font-size: 0.86rem; align-items: center; }
 .legende span { display: inline-flex; gap: 8px; align-items: center; }
-.legende .case { width: 16px; height: 16px; }
-.legende .case.projet::after { width: 6px; height: 6px; }
+.legende .case { width: 14px; height: 14px; }
+.legende .case.projet::after { width: 5px; height: 5px; }
 .liste-jours { font-variant-numeric: tabular-nums; }
-/* La recette d'une journée : cinq moments, toujours dans le même ordre. */
-.recette { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px; list-style: none; padding: 0; }
-.recette li {
-  background: var(--surface); border: 1px solid var(--filet); border-top: 3px solid var(--marque);
-  border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; align-content: start;
+.liste-jours a { font-family: var(--police-titre); font-size: 1.12rem; }
+/* La recette d'une journée : cinq moments, toujours dans le même ordre, en grille à filets. */
+.recette {
+  list-style: none; padding: 0; margin: 0; display: grid; gap: 0; counter-reset: moment;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border-top: 1px solid var(--filet); border-left: 1px solid var(--filet);
 }
-.recette .quoi { font-size: 0.88rem; color: var(--secondaire); }
+.recette li {
+  counter-increment: moment; border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet);
+  padding: 16px; display: grid; gap: 6px; align-content: start;
+}
+.recette li::before { content: "0" counter(moment); font: 500 0.7rem/1 var(--police-code); letter-spacing: 0.1em; color: var(--marque); }
+.recette strong { font-family: var(--police-titre); font-weight: 400; font-size: 1.15rem; }
+.recette .quoi { font-size: 0.86rem; color: var(--secondaire); }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
