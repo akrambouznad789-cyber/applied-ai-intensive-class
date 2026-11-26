@@ -136,6 +136,24 @@ table.chiffres tfoot td { border-bottom: none; font-weight: 600; }
 .sources ul { font-size: 0.95rem; }
 .attribution { color: var(--secondaire); font-size: 0.85rem; }
 
+/* Sources : une carte par ressource (vidéo, lecture, article), avec le passage précis et un bouton qui y mène.
+   Jamais de capture d'écran d'une ressource : la carte renvoie à l'original. */
+.cartes-sources { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.carte-source {
+  background: var(--surface); border: 1px solid var(--filet); border-top: 3px solid var(--marque); border-radius: 10px;
+  padding: 14px 16px; display: grid; gap: 6px; align-content: start;
+}
+.type-source { display: flex; align-items: center; gap: 6px; font-family: var(--police-code); font-size: 0.76rem; color: var(--secondaire); text-transform: uppercase; letter-spacing: 0.04em; }
+.type-source svg { width: 14px; height: 14px; color: var(--marque); flex: none; }
+.carte-source h3 { font-size: 1rem; line-height: 1.3; }
+.passage { font-family: var(--police-code); font-size: 0.85rem; color: var(--secondaire); }
+.citation { font-size: 0.9rem; font-style: italic; border-left: 2px solid var(--filet); padding-left: 10px; }
+.bouton-source {
+  justify-self: start; margin-top: 4px; font: 600 0.88rem/1 var(--police-texte); padding: 8px 13px 7px; border-radius: 999px;
+  border: 1px solid var(--marque); color: var(--texte); text-decoration: none;
+}
+.bouton-source:hover { background: color-mix(in oklab, var(--marque) 14%, var(--surface)); }
+
 /* Page de la route : liens du haut, la ligne des phases, une rangée de cases par phase */
 .liens-haut { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
 .liens-haut a {
