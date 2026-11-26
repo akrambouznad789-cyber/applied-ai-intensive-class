@@ -1,31 +1,31 @@
 /* Pages des deux classes intensives : la route des 140 jours et une fiche par jour.
    Le même fichier sert aux deux classes : une retouche ici se reporte dans l'autre classe.
-   Identité « Route de nuit » : un graphite bleuté, une ligne ambre comme une route la nuit, des courbes de niveau.
-   Newsreader (titres), Hanken Grotesk en poids fins (texte), IBM Plex Mono (étiquettes, chiffres, code).
-   Sombre seulement : la même ambiance d'une page à l'autre, sur la vitrine, la page d'accueil et les deux classes. */
+   Identité « Carte d'étude » : le charbon neutre d'une carte d'étude, une trame de points, des traits fins,
+   quelques couleurs franches ; Overpass (titres et texte, poids fins) et Overpass Mono (étiquettes, chiffres, code).
+   Sombre seulement : la même ambiance sur la vitrine, la page d'accueil et les deux classes. */
 :root {
-  --fond: #232830;
-  --surface: #2A3039;
-  --relief: #323944;
-  --texte: #ECE7DD;
-  --secondaire: #AAB2BE;
-  --discret: #959EAC;       /* étiquettes en mono : 4,5:1 au moins sur le fond et les surfaces */
-  --filet: #3B4350;
-  --filet-fort: #4E5866;
-  --signature: #EDBA5C;     /* l'ambre de l'identité : la marque, les numéros */
-  --accent: #EDBA5C;        /* liens et focus */
-  --marque: #CB9027;        /* série 1 des graphiques et couleur de la classe : ce qu'on veut montrer */
-  --serie-2: #2FAE9D;       /* sarcelle : la classe Inférence */
-  --serie-3: #5E8FE6;       /* bleu : la recherche */
-  --neutre: #5B6473;        /* le contexte dans un graphique */
-  --sur-marque: #1B1F26;    /* texte posé sur un aplat de couleur */
-  --police-titre: "Newsreader", Georgia, "Times New Roman", serif;
-  --police-texte: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
-  --police-code: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --fond: #1D1D21;
+  --surface: #25252C;
+  --relief: #2E2E36;
+  --texte: #F2F2F2;
+  --secondaire: #ABABB3;
+  --discret: #8E8E98;       /* étiquettes en mono : 4,5:1 au moins sur le fond et les surfaces */
+  --filet: #3A3A44;
+  --filet-fort: #55555F;
+  --accent: #A9CBF2;        /* liens, focus et la marque : le bleu clair de la carte */
+  --marque: #C95A50;        /* série 1 et couleur de la classe Applied AI (saumon) : ce qu'on veut montrer */
+  --marque-texte: #E58376;  /* la même couleur, assez claire pour un texte ou un chiffre */
+  --serie-2: #41B490;       /* menthe : la classe AI Inference */
+  --serie-3: #6E9EE2;       /* bleu : la recherche */
+  --neutre: #55555F;        /* le contexte dans un graphique */
+  --sur-marque: #151517;    /* texte posé sur un aplat de couleur */
+  --police-titre: "Overpass", "Segoe UI", system-ui, sans-serif;
+  --police-texte: "Overpass", "Segoe UI", system-ui, sans-serif;
+  --police-code: "Overpass Mono", ui-monospace, Consolas, monospace;
   color-scheme: dark;
 }
-/* La classe Inférence prend la sarcelle pour ses jours et ses liens ; la marque reste ambre. */
-.classe-inference { --marque: var(--serie-2); --accent: #5CC9B8; }
+/* La classe AI Inference prend la menthe pour ses jours et ses graphiques. */
+.classe-inference { --marque: var(--serie-2); --marque-texte: #5CC9A5; }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -33,32 +33,35 @@
 .sr-titre { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 body {
   margin: 0;
-  background: var(--fond);
+  background-color: var(--fond);
+  /* La trame de points de la carte d'étude */
+  background-image: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.05) 1px, transparent 1.5px);
+  background-size: 22px 22px;
   color: var(--texte);
   font-family: var(--police-texte);
   font-weight: 300;
   font-size: 17px;
-  line-height: 1.7;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-::selection { background: color-mix(in oklab, var(--signature) 35%, transparent); }
+::selection { background: color-mix(in oklab, var(--accent) 35%, transparent); }
 img { max-width: 100%; height: auto; }
 .page-jour, .page-jours {
   max-width: 46rem;
   margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 22px 72px;
+  padding-block: 22px 40px;
   display: grid;
   gap: 52px;
 }
 .page-jour > *, .page-jours > * { min-width: 0; }
-h1, h2, h3 { margin: 0; text-wrap: balance; font-family: var(--police-titre); font-weight: 400; letter-spacing: -0.01em; }
-h1 { font-size: clamp(2.3rem, 6vw, 3.3rem); line-height: 1.05; font-weight: 300; }
-h2 { font-size: 1.6rem; line-height: 1.15; }
-h3 { font-size: 1.18rem; line-height: 1.25; }
-strong, b { font-weight: 500; }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-family: var(--police-titre); font-weight: 400; letter-spacing: -0.02em; }
+h1 { font-size: clamp(2.3rem, 6vw, 3.3rem); line-height: 1.04; font-weight: 300; letter-spacing: -0.03em; }
+h2 { font-size: 1.6rem; line-height: 1.15; font-weight: 300; }
+h3 { font-size: 1.15rem; line-height: 1.3; }
+strong, b { font-weight: 600; }
 p, ul, ol { margin: 0; }
 ul, ol { padding-left: 1.3em; display: grid; gap: 6px; }
 a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--accent) 45%, transparent); }
@@ -73,26 +76,20 @@ code { font-family: var(--police-code); font-size: 0.86em; font-weight: 400; bac
 }
 .signature {
   display: inline-flex; align-items: center; gap: 10px; color: var(--texte); text-decoration: none;
-  font: 500 0.78rem/1 var(--police-code); letter-spacing: 0.06em;
+  font: 500 0.8rem/1 var(--police-code); letter-spacing: 0.04em;
 }
-.signature svg { width: 30px; height: 10px; color: var(--signature); flex: none; }
+.signature svg { width: 30px; height: 10px; color: var(--accent); flex: none; }
 .liens-haut { display: flex; flex-wrap: wrap; gap: 6px 22px; list-style: none; padding: 0; margin: 0; }
-.liens-haut a, .retour a {
-  font: 400 0.72rem/1.4 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase;
+.liens-haut a {
+  font: 400 0.74rem/1.4 var(--police-code); letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--secondaire); text-decoration: none;
 }
-.liens-haut a:hover, .retour a:hover { color: var(--texte); }
+.liens-haut a:hover { color: var(--texte); }
 
-/* En-tête : courbes de niveau discrètes, de la couleur de la classe. */
-.entete { display: grid; gap: 14px; position: relative; isolation: isolate; padding-top: 10px; }
-.entete::before {
-  content: ""; position: absolute; z-index: -1; top: -6px; right: 0; width: min(400px, 72%); height: 210px;
-  background: var(--marque); opacity: 0.15; pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 230' fill='none' stroke='black' stroke-width='1'%3E%3Cg transform='translate(300 108)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(5) scale(.8)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(10) scale(.61)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(16) scale(.43)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(23) scale(.26)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-8) scale(.5)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-2) scale(.3)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top / contain;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 230' fill='none' stroke='black' stroke-width='1'%3E%3Cg transform='translate(300 108)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(5) scale(.8)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(10) scale(.61)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(16) scale(.43)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(23) scale(.26)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-8) scale(.5)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-2) scale(.3)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top / contain;
-}
-.surtitre { font: 400 0.72rem/1.5 var(--police-code); letter-spacing: 0.12em; text-transform: uppercase; color: var(--discret); }
-.chapeau { font-size: 1.1rem; color: var(--secondaire); max-width: 60ch; }
+/* En-tête */
+.entete { display: grid; gap: 14px; padding-top: 10px; }
+.surtitre { font: 400 0.74rem/1.5 var(--police-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--discret); }
+.chapeau { font-size: 1.12rem; color: var(--secondaire); max-width: 60ch; }
 /* Le compteur du jour : une route, et un nœud là où on en est. */
 .compteur { height: 2px; background: var(--filet); position: relative; margin-block: 4px; }
 .compteur span { display: block; height: 100%; background: var(--marque); position: relative; }
@@ -104,7 +101,7 @@ code { font-family: var(--police-code); font-size: 0.86em; font-weight: 400; bac
 /* Sections numérotées : l'ordre de la journée (notions, démo, mots, sources) */
 .page-jour section { display: grid; gap: 18px; padding-top: 30px; border-top: 1px solid var(--filet); }
 .page-jour section > * { min-width: 0; }
-.numero { font: 500 0.72rem/1 var(--police-code); letter-spacing: 0.1em; color: var(--marque); margin-right: 14px; vertical-align: 0.32em; }
+.numero { font: 500 0.74rem/1 var(--police-code); color: var(--marque-texte); margin-right: 14px; vertical-align: 0.3em; }
 .page-jour p { max-width: 68ch; }
 
 /* Encadrés : seuls le schéma et la démo sont des objets à part */
@@ -126,10 +123,10 @@ pre.pseudo {
 
 /* Tableaux de chiffres : les nombres en mono, alignés à droite */
 table.chiffres { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
-table.chiffres th { font: 400 0.68rem/1.4 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase; color: var(--discret); text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--filet-fort); }
+table.chiffres th { font: 400 0.7rem/1.4 var(--police-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--discret); text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--filet-fort); }
 table.chiffres td { font: 400 0.86rem/1.5 var(--police-code); text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--filet); white-space: nowrap; }
 table.chiffres th:first-child, table.chiffres td:first-child { text-align: left; }
-table.chiffres tfoot td { border-bottom: none; color: var(--signature); font-weight: 500; }
+table.chiffres tfoot td { border-bottom: none; color: var(--marque-texte); font-weight: 500; }
 
 /* Ce qui reste à écrire par Akram */
 .a-ecrire { border: 1px dashed var(--filet-fort); border-radius: 3px; padding: 12px 14px; color: var(--secondaire); font-style: italic; }
@@ -137,11 +134,11 @@ table.chiffres tfoot td { border-bottom: none; color: var(--signature); font-wei
 /* Commandes des démos */
 .commandes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .bouton {
-  font: 500 0.72rem/1 var(--police-code); letter-spacing: 0.08em; text-transform: uppercase;
+  font: 500 0.74rem/1 var(--police-code); letter-spacing: 0.04em; text-transform: uppercase;
   padding: 10px 14px 9px; border-radius: 2px; border: 1px solid var(--filet-fort);
   background: transparent; color: var(--texte); cursor: pointer;
 }
-.bouton:hover { border-color: var(--marque); color: var(--accent); }
+.bouton:hover { border-color: var(--marque); color: var(--marque-texte); }
 .bouton[aria-pressed="true"] { background: var(--marque); color: var(--sur-marque); border-color: var(--marque); }
 .lecture { font-family: var(--police-code); font-size: 0.82rem; color: var(--secondaire); }
 .lecture strong { color: var(--texte); font-weight: 500; }
@@ -172,17 +169,17 @@ table.chiffres tfoot td { border-bottom: none; color: var(--signature); font-wei
   border-top: 1px solid var(--filet); border-left: 1px solid var(--filet);
 }
 .carte-source {
-  border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet);
+  border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet); background: var(--fond);
   padding: 18px 18px 16px; display: grid; gap: 8px; align-content: start; transition: background 0.15s;
 }
 .carte-source:hover { background: var(--surface); }
-.type-source { display: flex; align-items: center; gap: 8px; font: 400 0.68rem/1.4 var(--police-code); letter-spacing: 0.12em; text-transform: uppercase; color: var(--discret); }
-.type-source svg { width: 13px; height: 13px; color: var(--marque); flex: none; }
-.carte-source h3 { font-size: 1.12rem; line-height: 1.3; }
-.passage { font: 400 0.78rem/1.5 var(--police-code); color: var(--secondaire); }
-.citation { font-family: var(--police-titre); font-style: italic; font-size: 1.02rem; border-left: 1px solid var(--marque); padding-left: 12px; }
+.type-source { display: flex; align-items: center; gap: 8px; font: 400 0.7rem/1.4 var(--police-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--discret); }
+.type-source svg { width: 13px; height: 13px; color: var(--marque-texte); flex: none; }
+.carte-source h3 { font-size: 1.08rem; line-height: 1.3; }
+.passage { font: 400 0.8rem/1.5 var(--police-code); color: var(--secondaire); }
+.citation { font-style: italic; font-size: 0.98rem; border-left: 1px solid var(--marque); padding-left: 12px; }
 .bouton-source {
-  justify-self: start; margin-top: 4px; font: 500 0.7rem/1 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase;
+  justify-self: start; margin-top: 4px; font: 500 0.72rem/1 var(--police-code); letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--accent); text-decoration: none;
 }
 .bouton-source:hover { text-decoration: underline; }
@@ -192,8 +189,8 @@ table.chiffres tfoot td { border-bottom: none; color: var(--signature); font-wei
 .ligne-phases li { flex: var(--jours) 1 0; min-width: 0; }
 .ligne-phases a {
   display: block; position: relative; padding-top: 14px; text-decoration: none;
-  border-top: 3px solid color-mix(in oklab, var(--marque) 55%, var(--fond));
-  color: var(--secondaire); font: 500 0.72rem/1 var(--police-code);
+  border-top: 3px solid color-mix(in oklab, var(--marque) 60%, var(--fond));
+  color: var(--secondaire); font: 500 0.74rem/1 var(--police-code);
 }
 /* Une station au départ de chaque phase. */
 .ligne-phases a::before {
@@ -201,21 +198,21 @@ table.chiffres tfoot td { border-bottom: none; color: var(--signature); font-wei
   background: var(--fond); border: 2px solid var(--marque);
 }
 .ligne-phases a:hover { color: var(--texte); border-top-color: var(--marque); }
-.reperes-jours { display: flex; justify-content: space-between; font: 400 0.68rem/1 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase; color: var(--discret); }
+.reperes-jours { display: flex; justify-content: space-between; font: 400 0.7rem/1 var(--police-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--discret); }
 .page-jours section { display: grid; gap: 18px; }
 .page-jours section > * { min-width: 0; }
 .compte { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-.compte strong { font-family: var(--police-titre); font-size: 4.2rem; font-weight: 300; line-height: 1; color: var(--texte); }
+.compte strong { font-size: 4.2rem; font-weight: 200; line-height: 1; letter-spacing: -0.04em; color: var(--texte); }
 .compte span { color: var(--secondaire); }
 .phases { display: grid; gap: 0; border-top: 1px solid var(--filet); }
 .phase { display: grid; gap: 10px; padding-block: 18px; border-bottom: 1px solid var(--filet); scroll-margin-top: 16px; }
-.phase h3 { font-size: 1.15rem; }
-.phase h3 .numero { vertical-align: 0.2em; }
+.phase h3 { font-size: 1.1rem; }
+.phase h3 .numero { vertical-align: 0.15em; }
 .phase .contenu { color: var(--secondaire); font-size: 0.92rem; max-width: 68ch; }
 .cases { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; padding: 0; }
 .case {
   position: relative; display: block; width: 18px; height: 18px; border-radius: 2px;
-  border: 1px solid var(--filet-fort); background: transparent;
+  border: 1px solid var(--filet-fort); background: var(--fond);
 }
 .case.faite { background: var(--marque); border-color: var(--marque); }
 /* Un jour de projet porte un losange : la forme dit le projet, pas la couleur seule. */
@@ -230,7 +227,7 @@ a.case:hover { outline: 1px solid var(--texte); outline-offset: 2px; }
 .legende .case { width: 14px; height: 14px; }
 .legende .case.projet::after { width: 5px; height: 5px; }
 .liste-jours { font-variant-numeric: tabular-nums; }
-.liste-jours a { font-family: var(--police-titre); font-size: 1.12rem; }
+.liste-jours a { font-size: 1.08rem; }
 /* La recette d'une journée : cinq moments, toujours dans le même ordre, en grille à filets. */
 .recette {
   list-style: none; padding: 0; margin: 0; display: grid; gap: 0; counter-reset: moment;
@@ -238,11 +235,22 @@ a.case:hover { outline: 1px solid var(--texte); outline-offset: 2px; }
   border-top: 1px solid var(--filet); border-left: 1px solid var(--filet);
 }
 .recette li {
-  counter-increment: moment; border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet);
+  counter-increment: moment; border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet); background: var(--fond);
   padding: 16px; display: grid; gap: 6px; align-content: start;
 }
-.recette li::before { content: "0" counter(moment); font: 500 0.7rem/1 var(--police-code); letter-spacing: 0.1em; color: var(--marque); }
-.recette strong { font-family: var(--police-titre); font-weight: 400; font-size: 1.15rem; }
+.recette li::before { content: "0" counter(moment); font: 500 0.72rem/1 var(--police-code); color: var(--marque-texte); }
+.recette strong { font-weight: 400; font-size: 1.12rem; }
 .recette .quoi { font-size: 0.86rem; color: var(--secondaire); }
+
+/* Le pied de page, le même sur tous les sites : des colonnes de liens, puis le nom en très grand. */
+.pied { display: grid; gap: 28px; padding-top: 34px; border-top: 1px solid var(--filet); }
+.pied-colonnes { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 22px; }
+.pied-titre { font: 400 0.7rem/1.4 var(--police-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--discret); margin-bottom: 8px; }
+.pied ul { list-style: none; padding: 0; display: grid; gap: 4px; }
+.pied ul a { color: var(--texte); text-decoration: none; font-size: 0.95rem; }
+.pied ul a:hover { color: var(--accent); }
+.pied-nom { display: block; width: 100%; height: auto; }
+.pied-nom text { font-family: var(--police-titre); font-weight: 300; fill: var(--texte); }
+.pied-bas { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; font: 400 0.72rem/1.4 var(--police-code); color: var(--discret); }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

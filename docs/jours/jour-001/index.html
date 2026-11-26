@@ -7,7 +7,7 @@
 <meta name="description" content="A model has parameters; the loss puts a number on its error; gradient descent moves each parameter against the slope, by a step proportional to the slope.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..600;1,300..600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@400;500&family=Overpass:ital,wght@0,200..700;1,300..500&display=swap">
 <link rel="stylesheet" href="../../style.css">
 <style>
   /* Day 1 only: two charts side by side, stacked on a phone. */
@@ -159,7 +159,7 @@ repeat N times:
     <h2><span class="numero">3</span>What I did, in my words</h2>
     <p>I coded the setup simply.</p>
     <figure>
-      <img src="loss_by_learning_rate_sombre.png" width="1092" height="566" alt="The loss by step, over 20 steps from w = 0, on a log scale. With a learning rate of 0.08, it falls to its floor of 0.24 within 4 steps; with 0.01, it goes down slowly to 1.83; with 0.23, it climbs in a straight line to 19,103.">
+      <img src="loss_by_learning_rate_sombre.png" width="1098" height="565" alt="The loss by step, over 20 steps from w = 0, on a log scale. With a learning rate of 0.08, it falls to its floor of 0.24 within 4 steps; with 0.01, it goes down slowly to 1.83; with 0.23, it climbs in a straight line to 19,103.">
       <figcaption>The loss by step, for three learning rates (20 steps from w = 0, log scale).</figcaption>
     </figure>
     <p>I understood the overall process of gradient descent, especially the mechanics of the gradient of the loss, and how, instead of going value by value (the video's first method), we use the derivative of the loss with respect to the slope and the intercept. That way we can move toward the minimum (global or local, to be seen later). There is of course a question of step size, and sometimes of the number of iterations, which serve as stopping criteria. But overall, the notion of a loss function carries the idea that the loss is a choice, and that the model will exploit its flaws if there are any.</p>
@@ -184,6 +184,16 @@ repeat N times:
     </ul>
     <p class="attribution">Notions and demo: the AI assistant. Notebook, figure and words: Akram, code written step by step with the AI assistant. English translation of his words and notebook: the AI assistant.</p>
   </section>
+  <footer class="pied">
+    <div class="pied-colonnes">
+      <div><p class="pied-titre">Classes</p><ul><li><a href="https://akrambouznad789-cyber.github.io/applied-ai-intensive-class/">Applied AI</a></li><li><a href="https://akrambouznad789-cyber.github.io/ai-inference-intensive-class/">AI Inference</a></li></ul></div>
+      <div><p class="pied-titre">Path</p><ul><li><a href="https://akrambouznad789-cyber.github.io/">Showcase</a></li><li><a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">Roadmap</a></li></ul></div>
+      <div><p class="pied-titre">Code</p><ul><li><a href="https://github.com/akrambouznad789-cyber">GitHub</a></li></ul></div>
+      <div><p class="pied-titre">Contact</p><ul><li><a href="https://www.linkedin.com/in/akram-bouznad-68aa7b292/">LinkedIn</a></li></ul></div>
+    </div>
+    <svg class="pied-nom" viewBox="0 0 1000 128" role="img" aria-label="Akram Bouznad"><text x="0" y="106" font-size="150" textLength="1000" lengthAdjust="spacingAndGlyphs">akram bouznad</text></svg>
+    <p class="pied-bas"><span>Local models and running things on premise.</span><span>Polytechnique Montréal · CIRANO</span></p>
+  </footer>
 </main>
 
 <script>
