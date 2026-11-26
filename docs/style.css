@@ -188,7 +188,6 @@ a.case:hover { outline: 2px solid var(--texte); outline-offset: 1px; }
   background: var(--surface); border: 1px solid var(--filet); border-top: 3px solid var(--marque);
   border-radius: 8px; padding: 10px 12px; display: grid; gap: 2px; align-content: start;
 }
-.recette .duree { font-family: var(--police-code); font-size: 0.8rem; color: var(--secondaire); }
 .recette .quoi { font-size: 0.88rem; color: var(--secondaire); }
 
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

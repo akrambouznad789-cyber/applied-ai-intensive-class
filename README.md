@@ -10,7 +10,7 @@ Sister class: the [Intensive Inference Engineering Class](https://github.com/akr
 
 ## One day
 
-One session of about an hour a day, always in the same order:
+Each day follows the same order:
 
 1. **Notions**: theory first, through a diagram, a worked numeric example and pseudo-code, then the exact passage of a reference source.
 2. **Demo**: an interactive page that shows the idea on a transportation case.
