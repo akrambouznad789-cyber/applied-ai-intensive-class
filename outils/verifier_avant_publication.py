@@ -3,7 +3,7 @@
 Usage :
     python outils/verifier_avant_publication.py
 
-Le même fichier sert aux deux classes (Intensive AI Engineering Class, en français, et Intensive
+Le même fichier sert aux deux classes (Applied AI Intensive Class, en français, et Intensive
 Inference Engineering Class, en anglais) et à la vitrine bilingue (akrambouznad789-cyber.github.io) :
 une retouche ici se reporte dans les deux autres copies.
 

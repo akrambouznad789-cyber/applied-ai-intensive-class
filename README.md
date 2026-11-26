@@ -1,12 +1,12 @@
-# Intensive AI Engineering Class
+# Applied AI Intensive Class
 
 A 140-day intensive class in applied AI: from data up to an open language model served locally. Theory first, one page a day, a consolidation project every 7 to 10 days.
 
-**Site: https://akrambouznad789-cyber.github.io/intensive-ai-engineering-class/**
+**Site: https://akrambouznad789-cyber.github.io/applied-ai-intensive-class/**
 
 **Progress: 1 day published out of 140.**
 
-Sister class: the [Intensive Inference Engineering Class](https://github.com/akrambouznad789-cyber/intensive-inference-engineering-class), run in parallel, on the same day number. Both classes start from the [home page of the path](https://akrambouznad789-cyber.github.io/roadmap-ia/).
+Sister class: the [AI Inference Intensive Class](https://github.com/akrambouznad789-cyber/ai-inference-intensive-class), run in parallel, on the same day number. Both classes start from the [home page of the path](https://akrambouznad789-cyber.github.io/roadmap-ia/).
 
 ## One day
 
