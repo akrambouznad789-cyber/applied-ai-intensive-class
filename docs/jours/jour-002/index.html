@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Day 2 · Classifying: the logistic curve and cross-entropy | Applied AI Intensive Class</title>
+<meta name="description" content="For a yes-or-no question, the model outputs a probability through an S-shaped curve; cross-entropy, −ln of the probability given to the right answer, punishes a confident wrong answer without limit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@400;500&family=Overpass:ital,wght@0,200..700;1,300..500&display=swap">
+<link rel="stylesheet" href="../../style.css">
+<style>
+  /* Day 2 only: the guide line under the slider's position, and the slider's width. */
+  .marker-line { stroke: var(--neutre); stroke-width: 1; stroke-dasharray: 3 4; }
+  .curseur input { width: min(260px, 60vw); }
+</style>
+</head>
+<body>
+<main class="page-jour">
+  <nav class="barre" aria-label="Related pages">
+    <a class="signature" href="https://akrambouznad789-cyber.github.io/"><svg viewBox="0 0 30 10" aria-hidden="true"><circle cx="4" cy="5" r="3.2" fill="currentColor"/><line x1="7.6" y1="5" x2="22.4" y2="5" stroke="currentColor" stroke-width="1.4"/><circle cx="26" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>akram bouznad</a>
+    <ul class="liens-haut">
+      <li><a href="../../index.html">← The 140-day route</a></li>
+      <li><a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">Roadmap</a></li>
+    </ul>
+  </nav>
+
+  <header class="entete">
+    <p class="surtitre">Day 2 of 140 · Phase 1: Learning from data</p>
+    <div class="compteur" role="img" aria-label="Day 2 of 140"><span style="width: calc(2 / 140 * 100%)"></span></div>
+    <h1>Classifying: the logistic curve and cross-entropy</h1>
+    <p class="chapeau">For a yes-or-no question, the model outputs a probability through an S-shaped curve; cross-entropy, −ln of the probability given to the right answer, punishes a confident wrong answer without limit.</p>
+  </header>
+
+  <section id="notions">
+    <h2><span class="numero">1</span>Notions</h2>
+    <p>The case: will a delivery arrive late, yes or no? On Day 1 the model predicted a number of minutes. Here it must predict a probability, a number between 0 and 1, and the loss must say how good that probability was.</p>
+
+    <h3>From a score to a probability: the S-curve</h3>
+    <p>The model first computes a score, as on Day 1: <code>z = b + w × distance</code>. The score can be any number. The logistic curve (the sigmoid) squeezes it between 0 and 1: <code>p = 1 / (1 + e^(−z))</code>. A score of 0 gives 0.5; a large positive score gives almost 1; a large negative score, almost 0.</p>
+
+    <figure class="carte">
+      <div class="defilant">
+        <svg class="schema" viewBox="0 0 560 244" role="img" aria-labelledby="sigmoid-title sigmoid-desc">
+          <title id="sigmoid-title">The logistic curve turns a score into a probability</title>
+          <desc id="sigmoid-desc">With z = −3 + 0.5 × distance, a 2 km delivery gets z = −2 and p = 0.12; a 6 km delivery gets z = 0 and p = 0.50; a 10 km delivery gets z = 2 and p = 0.88.</desc>
+          <line class="axe" x1="56" y1="200" x2="536" y2="200"/>
+          <line class="axe" x1="56" y1="24" x2="56" y2="200"/>
+          <text class="svg-texte" x="56" y="218" text-anchor="middle">−6</text>
+          <text class="svg-texte" x="136" y="218" text-anchor="middle">−4</text>
+          <text class="svg-texte" x="216" y="218" text-anchor="middle">−2</text>
+          <text class="svg-texte" x="296" y="218" text-anchor="middle">0</text>
+          <text class="svg-texte" x="376" y="218" text-anchor="middle">2</text>
+          <text class="svg-texte" x="456" y="218" text-anchor="middle">4</text>
+          <text class="svg-texte" x="536" y="218" text-anchor="middle">6</text>
+          <text class="svg-texte" x="536" y="238" text-anchor="end">score z</text>
+          <text class="svg-texte" x="48" y="204" text-anchor="end">0</text>
+          <text class="svg-texte" x="48" y="119" text-anchor="end">0.5</text>
+          <text class="svg-texte" x="48" y="34" text-anchor="end">1</text>
+          <text class="svg-texte" x="64" y="18">p (late)</text>
+          <line class="marker-line" x1="56" y1="30" x2="536" y2="30"/>
+          <polyline class="trait-contexte" points="56,199.6 64,199.5 72,199.4 80,199.2 88,199.1 96,198.9 104,198.6 112,198.3 120,197.9 128,197.5 136,196.9 144,196.3 152,195.5 160,194.5 168,193.3 176,191.9 184,190.3 192,188.2 200,185.9 208,183.0 216,179.7 224,175.9 232,171.4 240,166.4 248,160.6 256,154.3 264,147.3 272,139.8 280,131.8 288,123.5 296,115.0 304,106.5 312,98.2 320,90.2 328,82.7 336,75.7 344,69.4 352,63.6 360,58.6 368,54.1 376,50.3 384,47.0 392,44.1 400,41.8 408,39.7 416,38.1 424,36.7 432,35.5 440,34.5 448,33.7 456,33.1 464,32.5 472,32.1 480,31.7 488,31.4 496,31.1 504,30.9 512,30.8 520,30.6 528,30.5 536,30.4"/>
+          <circle class="point-accent" cx="216" cy="179.7" r="5"/>
+          <circle class="point-accent" cx="296" cy="115" r="5"/>
+          <circle class="point-accent" cx="376" cy="50.3" r="5"/>
+          <text class="svg-texte-fort" x="224" y="194">2 km → 0.12</text>
+          <text class="svg-texte-fort" x="304" y="128">6 km → 0.50</text>
+          <text class="svg-texte-fort" x="364" y="46" text-anchor="end">10 km → 0.88</text>
+        </svg>
+      </div>
+      <figcaption>With <code>z = −3 + 0.5 × distance</code> (made-up weights): the longer the delivery, the higher the score, the closer the probability of being late gets to 1, without ever reaching it.</figcaption>
+    </figure>
+
+    <h3>Cross-entropy: the cost of a probability</h3>
+    <p>A delivery's cost is <code>−ln(p given to what actually happened)</code>. If it arrived late, we take the probability of late; if it arrived on time, the probability of on time, <code>1 − p</code>. The loss is the mean of the costs.</p>
+    <div class="defilant">
+      <table class="chiffres">
+        <thead>
+          <tr><th>Delivery</th><th>Actual</th><th>p (late)</th><th>p given to actual</th><th>Cross-entropy</th><th>Squared error</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>late</td><td>0.9</td><td>0.9</td><td>0.11</td><td>0.01</td></tr>
+          <tr><td>B</td><td>late</td><td>0.4</td><td>0.4</td><td>0.92</td><td>0.36</td></tr>
+          <tr><td>C</td><td>late</td><td>0.01</td><td>0.01</td><td>4.61</td><td>0.98</td></tr>
+          <tr><td>D</td><td>on time</td><td>0.2</td><td>0.8</td><td>0.22</td><td>0.04</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Mean</td><td></td><td></td><td></td><td>1.46</td><td>0.35</td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <p>Delivery C was late, and the model was 99% sure it would not be. Cross-entropy charges it 4.61, more than three times all the other deliveries put together. The squared error <code>(1 − p)²</code> charges it 0.98: it can never go above 1, however sure and wrong the model is.</p>
+
+    <h3>Why not the squared error</h3>
+    <p>Two reasons, both visible on delivery C.</p>
+    <ul>
+      <li>A ceiling. At p = 0.001, cross-entropy costs 6.91, at p = 0.0001 it costs 9.21: no limit. The squared error stays stuck under 1, so a disastrous prediction costs barely more than a mediocre one.</li>
+      <li>A flat slope. Through the S-curve, the slope of cross-entropy with respect to the score is simply <code>p − y</code> (y = 1 if late, 0 if on time): −0.99 for C. The slope of the squared error is <code>2 × (p − y) × p × (1 − p)</code>: −0.0196, fifty times weaker. Gradient descent, from Day 1, would barely move the model exactly where it is most wrong.</li>
+    </ul>
+
+    <h3>The recipe</h3>
+<pre class="pseudo">for each delivery:
+    z    ← b + w × distance
+    p    ← 1 / (1 + e^(−z))          # probability of late
+    cost ← −ln(p)        if late
+           −ln(1 − p)    if on time
+loss  ← mean(costs)
+slope ← mean((p − y) × distance)      # then a Day 1 step on w</pre>
+    <p>The same loss comes back in Phase 3: a language model is a classifier that picks the next token among thousands, and it is trained with −ln of the probability given to the right one.</p>
+
+    <h3>To watch</h3>
+    <p>StatQuest, <a href="https://www.youtube.com/watch?v=yIYKR4sgzI8&amp;t=180s">Logistic Regression</a>, from 3:00 to 6:10: the S-curve and what its y-axis means. Then <a href="https://www.youtube.com/watch?v=6ArSys5qHAU">Neural Networks Part 6: Cross Entropy</a>, from 0:00 to 8:40. What to look for: the chart where the squared residual flattens near 1 while cross-entropy keeps climbing.</p>
+  </section>
+
+  <section id="demo">
+    <h2><span class="numero">2</span>Demo</h2>
+    <div class="carte">
+      <div class="commandes" role="group" aria-label="Probability given to what actually happened">
+        <label class="curseur" for="probability">p <input type="range" id="probability" min="0.01" max="0.99" step="0.01" value="0.4"> <output id="probability-value" for="probability">0.40</output></label>
+      </div>
+      <div class="commandes" role="group" aria-label="Deliveries from the table">
+        <button type="button" class="bouton" data-probability="0.9" aria-pressed="false">A · 0.9</button>
+        <button type="button" class="bouton" data-probability="0.4" aria-pressed="true">B · 0.4</button>
+        <button type="button" class="bouton" data-probability="0.01" aria-pressed="false">C · 0.01</button>
+      </div>
+      <p class="lecture" id="reading" aria-live="polite"></p>
+      <figure class="defilant">
+        <svg id="cost-chart" class="schema" viewBox="0 0 760 300" role="img" aria-label="The cost of one delivery as a function of the probability given to what actually happened: cross-entropy against squared error"></svg>
+      </figure>
+      <p class="note">p is the probability the model gave to what actually happened. Cross-entropy in salmon, squared error in grey. Below 0.01, off the chart, cross-entropy keeps climbing: 6.91 at 0.001.</p>
+    </div>
+  </section>
+
+  <section id="mots">
+    <h2><span class="numero">3</span>What I did, in my words</h2>
+    <p>The S-curve takes a score z, from discrete or continuous variables, and gives the model's probability. Cross-entropy is useful because it punishes confident errors. The S-curve is tuned by its parameters: w for the steepness of the curve, and b, which moves the certainty threshold; w makes the model become sure or unsure more or less quickly. With the example of four situations, we see the difference between squared error and cross-entropy. What is also interesting, for gradient descent, is the derivative of cross-entropy or squared error with respect to the score z: it brings in the slope of the S-curve. Cross-entropy rises slowly, whereas squared error is stuck under 1, hence the poor calibration on extreme answers, and the extremely slow step of squared error on a model that is confident but wrong.</p>
+    <figure>
+      <img src="cost_by_probability_sombre.png" width="905" height="565" alt="The cost of one delivery as a function of the probability given to what actually happened. Cross-entropy, −ln p, climbs steeply toward the left; squared error, (1 − p)², starts at 1 and falls gently. For delivery C, at p = 0.01, cross-entropy costs 4.61 against 0.98 for squared error.">
+      <figcaption>The cost of one delivery under each loss, as a function of the probability given to what actually happened.</figcaption>
+    </figure>
+    <p>Concretely, we tested several different scores to see, with data, the difference between the two loss functions when we take the derivative with respect to the score z behind the probability. Comparing how "punitive" cross-entropy is turned out to be very interesting!</p>
+    <p>My notebook: <a href="https://github.com/akrambouznad789-cyber/applied-ai-intensive-class/blob/main/docs/jours/jour-002/jour-002.ipynb">jour-002.ipynb</a>.</p>
+  </section>
+
+  <section id="sources" class="sources">
+    <h2>Sources</h2>
+    <ul class="cartes-sources">
+      <li class="carte-source">
+        <p class="type-source"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>Video · StatQuest (Josh Starmer)</p>
+        <h3>StatQuest: Logistic Regression</h3>
+        <p class="passage">3:00 → 6:10</p>
+        <a class="bouton-source" href="https://www.youtube.com/watch?v=yIYKR4sgzI8&amp;t=180s">Watch from 3:00 ↗</a>
+      </li>
+      <li class="carte-source">
+        <p class="type-source"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>Video · StatQuest (Josh Starmer)</p>
+        <h3>Neural Networks Part 6: Cross Entropy</h3>
+        <p class="passage">0:00 → 8:40</p>
+        <a class="bouton-source" href="https://www.youtube.com/watch?v=6ArSys5qHAU">Watch from the start ↗</a>
+      </li>
+    </ul>
+    <p class="attribution">Notions and demo: the AI assistant. Notebook, figure and words: Akram, code written step by step with the AI assistant. English translation of his words: the AI assistant.</p>
+  </section>
+  <footer class="pied">
+    <div class="pied-colonnes">
+      <div><p class="pied-titre">Classes</p><ul><li><a href="https://akrambouznad789-cyber.github.io/applied-ai-intensive-class/">Applied AI</a></li><li><a href="https://akrambouznad789-cyber.github.io/ai-inference-intensive-class/">AI Inference</a></li></ul></div>
+      <div><p class="pied-titre">Path</p><ul><li><a href="https://akrambouznad789-cyber.github.io/">Showcase</a></li><li><a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">Roadmap</a></li></ul></div>
+      <div><p class="pied-titre">Code</p><ul><li><a href="https://github.com/akrambouznad789-cyber">GitHub</a></li></ul></div>
+      <div><p class="pied-titre">Contact</p><ul><li><a href="https://www.linkedin.com/in/akram-bouznad-68aa7b292/">LinkedIn</a></li></ul></div>
+    </div>
+    <svg class="pied-nom" viewBox="0 0 1000 128" role="img" aria-label="Akram Bouznad"><text x="0" y="106" font-size="150" textLength="1000" lengthAdjust="spacingAndGlyphs">akram bouznad</text></svg>
+    <p class="pied-bas"><span>Local models and running things on premise.</span><span>Polytechnique Montréal · CIRANO</span></p>
+  </footer>
+</main>
+
+<script>
+  const SVG = "http://www.w3.org/2000/svg";
+  const PLOT_AREA = { left: 56, right: 736, top: 34, bottom: 250 };  // plotting area inside a 760 × 300 viewBox
+  const MAXIMUM_COST_ON_CHART = 5;
+
+  const crossEntropy = (probability) => -Math.log(probability);
+  const squaredError = (probability) => (1 - probability) ** 2;
+  const formatNumber = (value, decimals) =>
+    value.toLocaleString("en-CA", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+
+  const x = (probability) => PLOT_AREA.left + probability * (PLOT_AREA.right - PLOT_AREA.left);
+  const y = (cost) => PLOT_AREA.bottom - (cost / MAXIMUM_COST_ON_CHART) * (PLOT_AREA.bottom - PLOT_AREA.top);
+
+  function svgElement(name, attributes, parent) {
+    const node = document.createElementNS(SVG, name);
+    for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
+    if (parent) parent.append(node);
+    return node;
+  }
+
+  function svgText(parent, content, xPosition, yPosition, anchor, cssClass = "svg-texte") {
+    const node = svgElement("text", { x: xPosition, y: yPosition, "text-anchor": anchor, class: cssClass }, parent);
+    node.textContent = content;
+    return node;
+  }
+
+  function curvePoints(costFunction) {
+    const points = [];
+    for (let i = 1; i <= 200; i += 1) {
+      const probability = i / 200;
+      const cost = costFunction(probability);
+      if (cost <= MAXIMUM_COST_ON_CHART) points.push(`${x(probability).toFixed(1)},${y(cost).toFixed(1)}`);
+    }
+    return points.join(" ");
+  }
+
+  // Axes and the two curves are drawn once; only the markers move with the slider.
+  const chart = document.getElementById("cost-chart");
+  svgElement("line", { class: "axe", x1: PLOT_AREA.left, y1: PLOT_AREA.bottom, x2: PLOT_AREA.right, y2: PLOT_AREA.bottom }, chart);
+  svgElement("line", { class: "axe", x1: PLOT_AREA.left, y1: PLOT_AREA.top, x2: PLOT_AREA.left, y2: PLOT_AREA.bottom }, chart);
+  for (const tick of [0, 0.25, 0.5, 0.75, 1]) svgText(chart, formatNumber(tick, 2), x(tick), PLOT_AREA.bottom + 17, "middle");
+  for (const tick of [0, 1, 2, 3, 4, 5]) svgText(chart, String(tick), PLOT_AREA.left - 8, y(tick) + 4, "end");
+  svgText(chart, "p given to what actually happened", PLOT_AREA.right, PLOT_AREA.bottom + 38, "end");
+  svgText(chart, "cost of one delivery", PLOT_AREA.left - 8, PLOT_AREA.top - 16, "start");
+  svgElement("polyline", { class: "trait-contexte", points: curvePoints(squaredError) }, chart);
+  svgElement("polyline", { class: "trait-accent", points: curvePoints(crossEntropy) }, chart);
+  svgText(chart, "cross-entropy  −ln p", x(0.075), y(3.6), "start", "svg-texte-fort");
+  svgText(chart, "squared error  (1 − p)²", x(0.02), y(0.12), "start");  // under the grey curve, which stays above 0.55 there
+  const markerLine = svgElement("line", { class: "marker-line", y1: PLOT_AREA.top, y2: PLOT_AREA.bottom }, chart);
+  const squaredErrorDot = svgElement("circle", { class: "point-contexte", r: 5 }, chart);
+  const crossEntropyDot = svgElement("circle", { class: "point-accent", r: 6 }, chart);
+
+  const slider = document.getElementById("probability");
+  const sliderValue = document.getElementById("probability-value");
+  const reading = document.getElementById("reading");
+  const presetButtons = document.querySelectorAll("[data-probability]");
+
+  function update() {
+    const probability = Number(slider.value);
+    const crossEntropyCost = crossEntropy(probability);
+    const squaredErrorCost = squaredError(probability);
+    sliderValue.textContent = formatNumber(probability, 2);
+    markerLine.setAttribute("x1", x(probability));
+    markerLine.setAttribute("x2", x(probability));
+    crossEntropyDot.setAttribute("cx", x(probability));
+    crossEntropyDot.setAttribute("cy", y(crossEntropyCost));
+    squaredErrorDot.setAttribute("cx", x(probability));
+    squaredErrorDot.setAttribute("cy", y(squaredErrorCost));
+    reading.textContent =
+      `p = ${formatNumber(probability, 2)} · cross-entropy ${formatNumber(crossEntropyCost, 2)} · squared error ${formatNumber(squaredErrorCost, 2)}`;
+    for (const button of presetButtons) {
+      button.setAttribute("aria-pressed", String(Number(button.dataset.probability) === probability));
+    }
+  }
+
+  slider.addEventListener("input", update);
+  for (const button of presetButtons) {
+    button.addEventListener("click", () => { slider.value = button.dataset.probability; update(); });
+  }
+  update();
+</script>
+</body>
+</html>

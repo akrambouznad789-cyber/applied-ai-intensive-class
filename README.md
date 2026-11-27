@@ -4,7 +4,7 @@ A 140-day intensive class in applied AI: from data up to an open language model 
 
 **Site: https://akrambouznad789-cyber.github.io/applied-ai-intensive-class/**
 
-**Progress: 1 day published out of 140.**
+**Progress: 2 days published out of 140.**
 
 Sister class: the [AI Inference Intensive Class](https://github.com/akrambouznad789-cyber/ai-inference-intensive-class), run in parallel, on the same day number. Both classes start from the [home page of the path](https://akrambouznad789-cyber.github.io/roadmap-ia/).
 
