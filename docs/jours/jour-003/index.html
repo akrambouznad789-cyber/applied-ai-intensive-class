@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Day 3 · Decision trees and random forests | Applied AI Intensive Class</title>
+<meta name="description" content="A tree picks the question that leaves the purest leaves (Gini impurity); a forest takes the vote of many trees grown on random draws of the data and of the variables; the out-of-bag error is a free validation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@400;500&family=Overpass:ital,wght@0,200..700;1,300..500&display=swap">
+<link rel="stylesheet" href="../../style.css">
+<style>
+  /* Day 3 only: on-time trips as hollow dots, the threshold line, the slider's width. */
+  .dot-on-time { fill: var(--surface); stroke: var(--secondaire); stroke-width: 1.5; }
+  .threshold-line { stroke: var(--marque); stroke-width: 1.4; stroke-dasharray: 4 4; }
+  .curseur input { width: min(260px, 60vw); }
+</style>
+</head>
+<body>
+<main class="page-jour">
+  <nav class="barre" aria-label="Related pages">
+    <a class="signature" href="https://akrambouznad789-cyber.github.io/"><svg viewBox="0 0 30 10" aria-hidden="true"><circle cx="4" cy="5" r="3.2" fill="currentColor"/><line x1="7.6" y1="5" x2="22.4" y2="5" stroke="currentColor" stroke-width="1.4"/><circle cx="26" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>akram bouznad</a>
+    <ul class="liens-haut">
+      <li><a href="../../index.html">← The 140-day route</a></li>
+      <li><a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">Roadmap</a></li>
+    </ul>
+  </nav>
+
+  <header class="entete">
+    <p class="surtitre">Day 3 of 140 · Phase 1: Learning from data</p>
+    <div class="compteur" role="img" aria-label="Day 3 of 140"><span style="width: calc(3 / 140 * 100%)"></span></div>
+    <h1>Decision trees and random forests</h1>
+    <p class="chapeau">A tree picks the question that leaves the purest leaves (Gini impurity); a forest takes the vote of many trees grown on random draws of the data and of the variables; the out-of-bag error is a free validation.</p>
+  </header>
+
+  <section id="notions">
+    <h2><span class="numero">1</span>Notions</h2>
+    <p>The case: seven trips, two yes-or-no questions (was it raining? was it rush hour?) and one answer to predict: late or on time. A tree asks one question, splits the trips in two, and starts again in each group. Learning means choosing which question to ask first.</p>
+    <div class="defilant">
+      <table class="chiffres">
+        <thead><tr><th>Trip</th><th>Rain</th><th>Rush hour</th><th>Late</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>yes</td><td>yes</td><td>yes</td></tr>
+          <tr><td>2</td><td>yes</td><td>yes</td><td>yes</td></tr>
+          <tr><td>3</td><td>yes</td><td>no</td><td>yes</td></tr>
+          <tr><td>4</td><td>yes</td><td>no</td><td>no</td></tr>
+          <tr><td>5</td><td>no</td><td>yes</td><td>yes</td></tr>
+          <tr><td>6</td><td>no</td><td>no</td><td>no</td></tr>
+          <tr><td>7</td><td>no</td><td>no</td><td>no</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Gini impurity: how mixed a leaf is</h3>
+    <p>For a leaf, <code>Gini = 1 − p_late² − p_on_time²</code>. A pure leaf (only late trips, or only on-time trips) scores 0. A half-and-half leaf scores 0.5, the worst possible with two classes. Read it as the chance that two trips drawn at random from the leaf disagree.</p>
+    <p>All seven trips together: 4 late, 3 on time, so <code>1 − (4/7)² − (3/7)² = 0.490</code>.</p>
+
+    <h3>Choosing the question</h3>
+    <p>The tree tries every question, computes the Gini of each leaf, then their average weighted by the number of trips in each leaf. It keeps the question with the lowest weighted impurity.</p>
+
+    <figure class="carte">
+      <div class="defilant">
+        <svg class="schema" viewBox="0 0 560 226" role="img" aria-labelledby="split-title split-desc">
+          <title id="split-title">Two candidate questions for the first split</title>
+          <desc id="split-desc">Splitting on rain gives a leaf of 3 late and 1 on time (Gini 0.375) and a leaf of 1 late and 2 on time (Gini 0.444), weighted 0.405. Splitting on rush hour gives a pure leaf of 3 late (Gini 0) and a leaf of 1 late and 3 on time (Gini 0.375), weighted 0.214: the tree keeps rush hour.</desc>
+          <rect class="boite" x="80" y="14" width="120" height="32" rx="3"/>
+          <text class="svg-texte-fort" x="140" y="35" text-anchor="middle">rain?</text>
+          <line class="fleche" x1="122" y1="46" x2="86" y2="92"/>
+          <line class="fleche" x1="158" y1="46" x2="194" y2="92"/>
+          <text class="svg-texte" x="92" y="70" text-anchor="end">yes</text>
+          <text class="svg-texte" x="188" y="70">no</text>
+          <rect class="boite" x="30" y="92" width="100" height="56" rx="3"/>
+          <circle class="point-accent" cx="59" cy="112" r="5"/><circle class="point-accent" cx="73" cy="112" r="5"/><circle class="point-accent" cx="87" cy="112" r="5"/><circle class="dot-on-time" cx="101" cy="112" r="4.5"/>
+          <text class="svg-texte" x="80" y="138" text-anchor="middle">Gini 0.375</text>
+          <rect class="boite" x="150" y="92" width="100" height="56" rx="3"/>
+          <circle class="point-accent" cx="186" cy="112" r="5"/><circle class="dot-on-time" cx="200" cy="112" r="4.5"/><circle class="dot-on-time" cx="214" cy="112" r="4.5"/>
+          <text class="svg-texte" x="200" y="138" text-anchor="middle">Gini 0.444</text>
+          <text class="svg-texte" x="140" y="178" text-anchor="middle">4/7 × 0.375 + 3/7 × 0.444</text>
+          <text class="svg-texte" x="140" y="198" text-anchor="middle">= 0.405</text>
+
+          <rect class="boite-accent" x="360" y="14" width="120" height="32" rx="3"/>
+          <text class="svg-texte-fort" x="420" y="35" text-anchor="middle">rush hour?</text>
+          <line class="fleche" x1="402" y1="46" x2="366" y2="92"/>
+          <line class="fleche" x1="438" y1="46" x2="474" y2="92"/>
+          <text class="svg-texte" x="372" y="70" text-anchor="end">yes</text>
+          <text class="svg-texte" x="468" y="70">no</text>
+          <rect class="boite" x="310" y="92" width="100" height="56" rx="3"/>
+          <circle class="point-accent" cx="346" cy="112" r="5"/><circle class="point-accent" cx="360" cy="112" r="5"/><circle class="point-accent" cx="374" cy="112" r="5"/>
+          <text class="svg-texte" x="360" y="138" text-anchor="middle">Gini 0</text>
+          <rect class="boite" x="430" y="92" width="100" height="56" rx="3"/>
+          <circle class="point-accent" cx="459" cy="112" r="5"/><circle class="dot-on-time" cx="473" cy="112" r="4.5"/><circle class="dot-on-time" cx="487" cy="112" r="4.5"/><circle class="dot-on-time" cx="501" cy="112" r="4.5"/>
+          <text class="svg-texte" x="480" y="138" text-anchor="middle">Gini 0.375</text>
+          <text class="svg-texte" x="420" y="178" text-anchor="middle">3/7 × 0 + 4/7 × 0.375</text>
+          <text class="svg-texte-fort" x="420" y="198" text-anchor="middle">= 0.214 · kept</text>
+        </svg>
+      </div>
+      <figcaption>Filled dots: late trips. Hollow dots: on-time trips. Both questions lower the impurity of 0.490, but rush hour lowers it more, so it becomes the first question of the tree.</figcaption>
+    </figure>
+    <p>For a number such as the distance, the tree tries every threshold between two consecutive values (the demo below does exactly that). Then it repeats the whole search inside each leaf. Left alone, it keeps splitting until every leaf is pure, down to one trip per leaf: it has learned the noise of these trips by heart, and it will do poorly on new ones.</p>
+
+    <h3>A forest: many trees, made different on purpose</h3>
+    <p>A single deep tree changes a lot if a few trips change. A random forest grows hundreds of deep trees and makes them differ in two ways, then takes their vote.</p>
+    <ul>
+      <li>Bootstrap: each tree learns on n trips drawn with replacement from the n trips. Some come back twice, others never.</li>
+      <li>A random subset of variables at each split (often √p out of p variables). Otherwise every tree would ask the same strong question first and they would all make the same mistakes.</li>
+    </ul>
+    <p>Each tree is still overfit, but in its own way. Their errors partly cancel out in the vote: the forest keeps the low bias of deep trees and loses much of their variance.</p>
+
+    <h3>The out-of-bag error: a free validation</h3>
+    <p>A bootstrap draw leaves out about 37% of the trips (the chance that a trip is never drawn is <code>(1 − 1/n)ⁿ</code>, close to 1/e ≈ 0.37). Each trip can therefore be predicted by the trees that never saw it. The error of these predictions, the out-of-bag error, estimates the error on new data without setting a test set aside. One limit: the trips left out are drawn at random, so for a forecast of tomorrow it shares the flaw of a random split (Day 6).</p>
+
+    <h3>The recipe</h3>
+<pre class="pseudo">gini(leaf) = 1 − p_late² − p_on_time²
+
+best split of a node:
+    for each variable (a forest: only a random subset):
+        for each threshold between two consecutive values:
+            split the trips into left and right
+            impurity ← (n_left × gini(left) + n_right × gini(right)) / n
+            keep the split with the lowest impurity
+
+forest:
+    repeat 500 times:
+        sample ← n trips drawn with replacement
+        grow a deep tree on the sample
+    predict: majority vote of the trees</pre>
+
+    <h3>To watch</h3>
+    <p>StatQuest, <a href="https://www.youtube.com/watch?v=_L39rN6gz7Y&amp;t=180s">Decision and Classification Trees, Clearly Explained!!!</a>, from 3:00 to 12:15 (Gini impurity and the choice of the first question), then from 16:15 to 17:20 (a tree that overfits). Then <a href="https://www.youtube.com/watch?v=J4Wdy0Wc_xQ&amp;t=60s">Random Forests Part 1</a>, from 1:00 to 8:15. What to look for: how the trips left out of each bootstrap sample become the out-of-bag test.</p>
+  </section>
+
+  <section id="demo">
+    <h2><span class="numero">2</span>Demo</h2>
+    <div class="carte">
+      <div class="commandes">
+        <label class="curseur" for="threshold">threshold <input type="range" id="threshold" min="1.5" max="11.5" step="1" value="3.5"> <output id="threshold-value" for="threshold">3.5 km</output></label>
+      </div>
+      <p class="lecture" id="reading" aria-live="polite"></p>
+      <figure class="defilant">
+        <svg id="threshold-chart" class="schema" viewBox="0 0 760 330" role="img" aria-label="Twelve trips by distance, a threshold that splits them in two, and the weighted Gini impurity for each threshold"></svg>
+      </figure>
+      <p class="note">Twelve made-up trips, from 1 to 12 km. Filled dots: late. Hollow dots: on time. Move the threshold: the tree would keep the lowest point of the curve.</p>
+    </div>
+  </section>
+
+  <section id="mots">
+    <h2><span class="numero">3</span>What I did, in my words</h2>
+    <p>The variety of deep trees, each one different, together with the majority vote rather than a decision where one variable settles everything at the root node, is what fixes the accuracy problem. The out-of-bag error has to be minimized, but be wary if it is too low: it means there is a leak in time. The model imitates neighbouring trips seen in training; in service, unlike in the test on the trips that were not drawn, it cannot know the first days, since it was only trained to recognize situations where closeness in time gave it a hint. The solution is to split the sets so that it is tested on later days.</p>
+    <figure>
+      <img src="gini_by_threshold_sombre.png" width="933" height="577" alt="The weighted Gini impurity of a split on distance, for each threshold from 1.5 to 14.5 km, on 2,000 simulated trips. The curve is shaped like a U under the Gini of all trips (0.487), rising back toward it at both ends; its lowest point is at 8.5 km, with 0.422.">
+      <figcaption>The weighted Gini of a split on distance, for each threshold (2,000 simulated trips).</figcaption>
+    </figure>
+    <p>In my notebook, the forest wins on the test even though both models score 1.0 on training.</p>
+    <p>My notebook: <a href="https://github.com/akrambouznad789-cyber/applied-ai-intensive-class/blob/main/docs/jours/jour-003/jour-003.ipynb">jour-003.ipynb</a>.</p>
+  </section>
+
+  <section id="sources" class="sources">
+    <h2>Sources</h2>
+    <ul class="cartes-sources">
+      <li class="carte-source">
+        <p class="type-source"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>Video · StatQuest (Josh Starmer)</p>
+        <h3>Decision and Classification Trees, Clearly Explained!!!</h3>
+        <p class="passage">3:00 → 12:15 · 16:15 → 17:20</p>
+        <a class="bouton-source" href="https://www.youtube.com/watch?v=_L39rN6gz7Y&amp;t=180s">Watch from 3:00 ↗</a>
+      </li>
+      <li class="carte-source">
+        <p class="type-source"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>Video · StatQuest (Josh Starmer)</p>
+        <h3>Random Forests Part 1: Building, Using and Evaluating</h3>
+        <p class="passage">1:00 → 8:15</p>
+        <a class="bouton-source" href="https://www.youtube.com/watch?v=J4Wdy0Wc_xQ&amp;t=60s">Watch from 1:00 ↗</a>
+      </li>
+    </ul>
+    <p class="attribution">Notions and demo: the AI assistant. Notebook, figure and words: Akram, code written step by step with the AI assistant. English translation of his words: the AI assistant.</p>
+  </section>
+  <footer class="pied">
+    <div class="pied-colonnes">
+      <div><p class="pied-titre">Classes</p><ul><li><a href="https://akrambouznad789-cyber.github.io/applied-ai-intensive-class/">Applied AI</a></li><li><a href="https://akrambouznad789-cyber.github.io/ai-inference-intensive-class/">AI Inference</a></li></ul></div>
+      <div><p class="pied-titre">Path</p><ul><li><a href="https://akrambouznad789-cyber.github.io/">Showcase</a></li><li><a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">Roadmap</a></li></ul></div>
+      <div><p class="pied-titre">Code</p><ul><li><a href="https://github.com/akrambouznad789-cyber">GitHub</a></li></ul></div>
+      <div><p class="pied-titre">Contact</p><ul><li><a href="https://www.linkedin.com/in/akram-bouznad-68aa7b292/">LinkedIn</a></li></ul></div>
+    </div>
+    <svg class="pied-nom" viewBox="0 0 1000 128" role="img" aria-label="Akram Bouznad"><text x="0" y="106" font-size="150" textLength="1000" lengthAdjust="spacingAndGlyphs">akram bouznad</text></svg>
+    <p class="pied-bas"><span>Local models and running things on premise.</span><span>Polytechnique Montréal · CIRANO</span></p>
+  </footer>
+</main>
+
+<script>
+  const SVG = "http://www.w3.org/2000/svg";
+  const DISTANCES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];   // km
+  const IS_LATE = [0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1];
+  const THRESHOLDS = DISTANCES.slice(0, -1).map((distance) => distance + 0.5);   // between two consecutive trips
+  const AXIS = { left: 56, right: 736 };
+  const TRIPS_ROW_Y = 70;
+  const CURVE_AREA = { top: 140, bottom: 286, giniMin: 0.2, giniMax: 0.5 };
+
+  const x = (distance) => AXIS.left + ((distance - 0.5) / 12) * (AXIS.right - AXIS.left);
+  const y = (gini) => CURVE_AREA.bottom - ((gini - CURVE_AREA.giniMin) / (CURVE_AREA.giniMax - CURVE_AREA.giniMin)) * (CURVE_AREA.bottom - CURVE_AREA.top);
+  const formatNumber = (value, decimals) =>
+    value.toLocaleString("en-CA", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+
+  function gini(labels) {
+    if (labels.length === 0) return 0;
+    const shareLate = labels.reduce((sum, label) => sum + label, 0) / labels.length;
+    return 1 - shareLate ** 2 - (1 - shareLate) ** 2;
+  }
+
+  function split(threshold) {
+    const left = IS_LATE.filter((_, index) => DISTANCES[index] < threshold);
+    const right = IS_LATE.filter((_, index) => DISTANCES[index] >= threshold);
+    const weighted = (left.length * gini(left) + right.length * gini(right)) / IS_LATE.length;
+    return { left, right, weighted };
+  }
+
+  const weightedGiniByThreshold = THRESHOLDS.map((threshold) => split(threshold).weighted);
+  const lowestWeightedGini = Math.min(...weightedGiniByThreshold);
+
+  function svgElement(name, attributes, parent) {
+    const node = document.createElementNS(SVG, name);
+    for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
+    if (parent) parent.append(node);
+    return node;
+  }
+
+  function svgText(parent, content, xPosition, yPosition, anchor, cssClass = "svg-texte") {
+    const node = svgElement("text", { x: xPosition, y: yPosition, "text-anchor": anchor, class: cssClass }, parent);
+    node.textContent = content;
+    return node;
+  }
+
+  // Everything that does not move is drawn once: the trips, the axes, the impurity curve.
+  const chart = document.getElementById("threshold-chart");
+  svgText(chart, "trips", AXIS.left, 20, "start");
+  svgElement("line", { class: "axe", x1: AXIS.left, y1: TRIPS_ROW_Y + 16, x2: AXIS.right, y2: TRIPS_ROW_Y + 16 }, chart);
+  DISTANCES.forEach((distance, index) => {
+    if (IS_LATE[index]) svgElement("circle", { class: "point-accent", cx: x(distance), cy: TRIPS_ROW_Y, r: 7 }, chart);
+    else svgElement("circle", { class: "dot-on-time", cx: x(distance), cy: TRIPS_ROW_Y, r: 6.5 }, chart);
+  });
+  svgElement("line", { class: "axe", x1: AXIS.left, y1: CURVE_AREA.bottom, x2: AXIS.right, y2: CURVE_AREA.bottom }, chart);
+  svgElement("line", { class: "axe", x1: AXIS.left, y1: CURVE_AREA.top, x2: AXIS.left, y2: CURVE_AREA.bottom }, chart);
+  for (const tick of [0.2, 0.3, 0.4, 0.5]) svgText(chart, formatNumber(tick, 1), AXIS.left - 8, y(tick) + 4, "end");
+  for (const distance of DISTANCES) svgText(chart, String(distance), x(distance), CURVE_AREA.bottom + 18, "middle");
+  svgText(chart, "distance (km)", AXIS.right, CURVE_AREA.bottom + 38, "end");
+  svgText(chart, "weighted Gini of the split", AXIS.left - 8, CURVE_AREA.top - 14, "start");
+  svgElement("polyline", {
+    class: "trait-contexte",
+    points: THRESHOLDS.map((threshold, index) => `${x(threshold).toFixed(1)},${y(weightedGiniByThreshold[index]).toFixed(1)}`).join(" "),
+  }, chart);
+  THRESHOLDS.forEach((threshold, index) => {
+    svgElement("circle", { class: "point-contexte", cx: x(threshold), cy: y(weightedGiniByThreshold[index]), r: 3.5 }, chart);
+  });
+
+  const thresholdLine = svgElement("line", { class: "threshold-line", y1: 32, y2: CURVE_AREA.bottom }, chart);
+  const leftLabel = svgText(chart, "", 0, 46, "end", "svg-texte-fort");
+  const rightLabel = svgText(chart, "", 0, 46, "start", "svg-texte-fort");
+  const currentDot = svgElement("circle", { class: "point-accent", r: 6 }, chart);
+
+  const slider = document.getElementById("threshold");
+  const sliderValue = document.getElementById("threshold-value");
+  const reading = document.getElementById("reading");
+
+  function describeLeaf(labels) {
+    const late = labels.reduce((sum, label) => sum + label, 0);
+    return `${labels.length} trips, ${late} late, Gini ${formatNumber(gini(labels), 2)}`;
+  }
+
+  function update() {
+    const threshold = Number(slider.value);
+    const { left, right, weighted } = split(threshold);
+    sliderValue.textContent = `${formatNumber(threshold, 1)} km`;
+    thresholdLine.setAttribute("x1", x(threshold));
+    thresholdLine.setAttribute("x2", x(threshold));
+    leftLabel.setAttribute("x", x(threshold) - 10);
+    leftLabel.textContent = `← Gini ${formatNumber(gini(left), 2)}`;
+    rightLabel.setAttribute("x", x(threshold) + 10);
+    rightLabel.textContent = `Gini ${formatNumber(gini(right), 2)} →`;
+    currentDot.setAttribute("cx", x(threshold));
+    currentDot.setAttribute("cy", y(weighted));
+    const isLowest = Math.abs(weighted - lowestWeightedGini) < 1e-9;
+    reading.textContent =
+      `Left: ${describeLeaf(left)} · right: ${describeLeaf(right)} · weighted ${formatNumber(weighted, 3)}` +
+      (isLowest ? " · the lowest: the tree keeps this threshold" : "");
+  }
+
+  slider.addEventListener("input", update);
+  update();
+</script>
+</body>
+</html>
